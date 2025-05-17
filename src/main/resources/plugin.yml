@@ -3,3 +3,4 @@ version: '${project.version}'
 main: top.nustar.nustarcorebridge.NuStarCoreBridge
 softdepend:
   - 'DragonCore'
+  - 'GermPlugin'

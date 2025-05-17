@@ -1,6 +1,6 @@
 package top.nustar.nustarcorebridge.listeners;
 
-import eos.moe.dragoncore.api.gui.event.CustomPacketEvent;
+import com.germ.germplugin.api.event.GermReceiveDosEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import top.nustar.nustarcorebridge.api.PacketEventBus;
@@ -8,18 +8,18 @@ import top.nustar.nustarcorebridge.api.PacketEventBus;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DragonPacketListener implements Listener {
+public class GermPacketListener implements Listener {
     @EventHandler
-    public void dragonPacket(CustomPacketEvent event) {
-        String handleName = event.getData().get(0);
+    public void germPacket(GermReceiveDosEvent event) {
+        String[] args = event.getDosContent().split(" ");
+        String handleName = args[0];
         Map<String, Object> argsMap = new HashMap<>();
-        event.getData().remove(0);
-        for (String arg : event.getData()) {
-            String[] split = arg.split("=", -1);
+        for (int i = 1; i < args.length; i++) {
+            String[] split = args[i].split("=", -1);
             if (split.length != 2) continue;
             argsMap.put(split[0], split[1]);
         }
         argsMap.put("sender", event.getPlayer());
-        PacketEventBus.instance().post(event.getIdentifier(),handleName, argsMap);
+        PacketEventBus.instance().post(event.getDosId(),handleName, argsMap);
     }
 }
