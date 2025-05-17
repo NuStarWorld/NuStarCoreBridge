@@ -18,3 +18,13 @@ public class DefaultPacketProcessor implements PacketProcessor {
 ```java
 PacketEventBus.instance().registerPacket(DefaultPacketProcessor.class);
 ```
+
+### 发包参数格式
+|发包名称|方法|参数|说明|
+|:----|:----|:----|:----|
+|DefaultPacket|sendMessage|name={arg},message={arg}|一个测试发包|    
+
+龙核: 方法.发包('DefaultPacket', 'sendMessage', 'name=测试名字', 'message=测试消息')    
+萌芽: DefaultPacket<->sendMessage name=测试名字 message=测试消息    
+
+参数没有固定顺序，不支持重载方法。
