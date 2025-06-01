@@ -1,0 +1,15 @@
+# noinspection YAMLSchemaValidation
+name: NuStarCoreBridge
+version: '${version}'
+main: top.nustar.nustarcorebridge.NuStarCoreBridge
+load: STARTUP
+authors:
+- NuStar
+- ketikai
+depend:
+- minecraft-next
+softdepend:
+- DragonCore
+- GermPlugin
+commands:
+  nscg:
