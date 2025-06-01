@@ -1,6 +1,26 @@
+/*
+ *    NuStarCoreBridge
+ *    Copyright (C) 2025  NuStar
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.nustar.nustarcorebridge.subscriber;
 
 import com.germ.germplugin.api.event.GermReceiveDosEvent;
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
@@ -9,14 +29,12 @@ import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.PacketEventBus;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @Subscriber
 @DependsOn(classes = "com.germ.germplugin.GermPlugin")
 @SuppressWarnings("unused")
 public class GermPluginSubscriber implements Listener {
     private volatile PacketEventBus packetEventBus;
+
     @EventHandler
     public void germPacket(GermReceiveDosEvent event) {
         String[] args = event.getDosContent().split(" ");
@@ -27,8 +45,9 @@ public class GermPluginSubscriber implements Listener {
             if (split.length != 2) continue;
             argsMap.put(split[0], split[1]);
         }
-        packetEventBus.post(new BukkitSender(event.getPlayer()), event.getDosId(),handleName, argsMap);
+        packetEventBus.post(new BukkitSender(event.getPlayer()), event.getDosId(), handleName, argsMap);
     }
+
     @Autowired
     public void setPacketEventBus(PacketEventBus packetEventBus) {
         this.packetEventBus = packetEventBus;
