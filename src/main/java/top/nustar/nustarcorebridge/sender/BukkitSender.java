@@ -29,4 +29,9 @@ public class BukkitSender extends AbstractSender<Player> {
     public void sendMessage(String message) {
         this.sender.sendMessage(message);
     }
+
+    @Override
+    public boolean isOp() {
+        return this.sender.isOp();
+    }
 }

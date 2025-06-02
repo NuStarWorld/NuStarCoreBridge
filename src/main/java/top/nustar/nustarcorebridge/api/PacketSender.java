@@ -23,4 +23,5 @@ public interface PacketSender<T> {
     T getSender();
 
     void sendMessage(String message);
+    boolean isOp();
 }

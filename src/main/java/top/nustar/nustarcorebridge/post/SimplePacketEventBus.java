@@ -134,14 +134,16 @@ public class SimplePacketEventBus implements PacketEventBus {
                 argObjects[i++] = entry.getValue().getType().cast(value);
             }
             if (!missingParams.isEmpty()) {
-                String packetName = processor.getPacketName(processor);
-                String handlerName = processor.getHandlerName(method);
-                String allParams = String.join("§7, §b", parameters.keySet());
+                if (packetSender.isOp()) {
+                    String packetName = processor.getPacketName(processor);
+                    String handlerName = processor.getHandlerName(method);
+                    String allParams = String.join("§7, §b", parameters.keySet());
 
-                packetSender.sendMessage("§c§l[!] §6NuStarCoreBridge §f- 参数错误");
-                packetSender.sendMessage("§7发包: §e" + packetName + " §7| §7方法: §a" + handlerName);
-                packetSender.sendMessage("§7缺失: §c" + String.join("§7, §c", missingParams));
-                packetSender.sendMessage("§7需要: §b" + allParams);
+                    packetSender.sendMessage("§c§l[!] §6NuStarCoreBridge §f- 参数错误");
+                    packetSender.sendMessage("§7发包: §e" + packetName + " §7| §7方法: §a" + handlerName);
+                    packetSender.sendMessage("§7缺失: §c" + String.join("§7, §c", missingParams));
+                    packetSender.sendMessage("§7需要: §b" + allParams);
+                }
                 return;
             }
             method.invoke(processor, argObjects);
