@@ -84,5 +84,10 @@ tasks.processResources {
 publishing {
     repositories {
         project(project)
+        maven {
+            name = "nustar-snapshots"
+            url = uri("https://maven.nustar.top/repository/nustar-snapshots/")
+            properties(project).login()
+        }
     }
 }
