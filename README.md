@@ -1,10 +1,26 @@
-# 核心桥
-本插件受益于Next框架的依赖反转(Ioc)特性，开发者只需专注业务逻辑，框架自动处理依赖注入和生命周期管理。
+# <img src="logo.png" height="40px" alt="Logo" style="vertical-align: middle;">核心桥
+
+<img src="logo.svg" height="140px" alt="logo" style="float: left;"/>
+本插件受益于`Next`框架的依赖反转(Ioc)特性。   
+
+可以帮助你快速创建包括但不限于DragonCore和GermPlugin的发包。   
+
+并且该插件还包装了各种服务，方便你进行多平台开发。   
+
+**使用本插件开发附属默认你已经会使用`Next`框架，这里不做过多赘述。**
+
+### 在开发前必须要做的第一步
+在插件主类添加`@EnableNuStarCoreBridge`注解 否则获取不到服务，也注入不了附属的任何组件
+```java
+@EnableNuStarCoreBridge
+public class NuStarParty extends SpigotPlugin {
+    // .....省略一堆代码
+}
+```
 
 ### 自定义发包处理器
 继承`PacketProcessor`接口后添加注解
 ```java
-
 @Component
 @PacketName("DefaultPacket")
 public class DefaultPacketProcessor implements PacketProcessor {
@@ -16,7 +32,11 @@ public class DefaultPacketProcessor implements PacketProcessor {
      * @param message 参数名
      */
     @PacketHandler("sendMessage")
-    public void sendMessage(PacketSender<Player> packetSender, @PacketArgument("name") String name, @PacketArgument("message") String message) {
+    public void sendMessage(
+            PacketSender<Player> packetSender,
+            @PacketArgument("name") String name,
+            @PacketArgument("message") String message
+    ) {
         System.out.printf("DefaultPacketProcessor.runPacket(%s,%s, %s)\n", packetSender, name, message);
     }
 
