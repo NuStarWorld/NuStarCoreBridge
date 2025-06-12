@@ -18,15 +18,15 @@
 
 package top.nustar.nustarcorebridge.post;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.*;
-import java.util.stream.Collectors;
 import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
+import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import team.idealstate.sugar.next.context.annotation.feature.Scope;
+import team.idealstate.sugar.next.context.lifecycle.Destroyable;
+import team.idealstate.sugar.next.context.lifecycle.Initializable;
+import team.idealstate.sugar.validate.Validation;
+import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.PacketEventBus;
 import top.nustar.nustarcorebridge.api.PacketProcessor;
 import top.nustar.nustarcorebridge.api.PacketSender;
@@ -34,19 +34,43 @@ import top.nustar.nustarcorebridge.api.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.annotations.PacketName;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.*;
+import java.util.stream.Collectors;
+
 @Component
 @Scope(Scope.SINGLETON)
 @SuppressWarnings("unused")
-public class SimplePacketEventBus implements PacketEventBus {
-    private Map<String, PacketProcessorDetail> packetProcessors = new HashMap<>();
+@DependsOn(
+        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
+)
+public class SimplePacketEventBus implements PacketEventBus, Initializable, Destroyable {
+    private final Map<String, PacketProcessorDetail> packetProcessors = new HashMap<>();
+    static volatile SimplePacketEventBus instance;
+
+    @Override
+    public void initialize() {
+        Validation.isNull(instance, "PacketEventBus is already initialized");
+        instance = this;
+    }
+
+    @Override
+    public void destroy() {
+        instance = null;
+    }
 
     @Autowired
-    public void setPacketProcessors(List<PacketProcessor> packetProcessors) {
-        this.packetProcessors = packetProcessors.stream()
-                .filter(packetProcessor -> packetProcessor.getClass().isAnnotationPresent(PacketName.class))
-                .peek(packetProcessor -> Log.info("Registering... " + packetProcessor.getPacketName(packetProcessor)))
-                .collect(Collectors.toMap(
-                        packetProcessor -> packetProcessor.getPacketName(packetProcessor), PacketProcessorDetail::new));
+    public void addPacketProcessors(List<PacketProcessor> packetProcessors) {
+        for (PacketProcessor processor : packetProcessors) {
+            if (!processor.getClass().isAnnotationPresent(PacketName.class)) {
+                continue;
+            }
+            String packetName = processor.getPacketName(processor);
+            Log.info("Registering... " + packetName);
+            this.packetProcessors.put(packetName, new PacketProcessorDetail(processor));
+        }
     }
 
     @Override
@@ -81,7 +105,7 @@ public class SimplePacketEventBus implements PacketEventBus {
                 HandlerDetail handlerDetail = new HandlerDetail(method);
                 this.handlerTable.put(handle, handlerDetail);
                 i++;
-                Log.info("               ┝── " + handler.value() + " " + handlerDetail.parameters.keySet());
+                Log.info("               ┝── " + handler.value() + " " + handlerDetail.parameters.keySet().stream().map(packetArgument -> packetArgument.value() + ":" + packetArgument.description()).collect(Collectors.toList()) + " - " + handler.description());
                 if (i == methods.length) {
                     Log.info("               ┕── 加载 " + methods.length + " 个方法");
                 }
@@ -100,7 +124,7 @@ public class SimplePacketEventBus implements PacketEventBus {
 
     private static final class HandlerDetail {
         private final Method method;
-        private final Map<String, Parameter> parameters;
+        private final Map<PacketArgument, Parameter> parameters;
 
         private HandlerDetail(Method method) {
             this.method = method;
@@ -110,10 +134,10 @@ public class SimplePacketEventBus implements PacketEventBus {
             for (Parameter parameter : parameters1) {
                 PacketArgument argument = parameter.getAnnotation(PacketArgument.class);
                 String argumentName;
-                if (argument == null || "".equals((argumentName = argument.value()))) {
+                if (argument == null || "".equals(argument.value())) {
                     continue;
                 }
-                parameters.put(argumentName, parameter);
+                parameters.put(argument, parameter);
             }
         }
 
@@ -124,8 +148,8 @@ public class SimplePacketEventBus implements PacketEventBus {
             argObjects[i++] = packetSender;
             List<String> missingParams = new ArrayList<>();
 
-            for (Map.Entry<String, Parameter> entry : parameters.entrySet()) {
-                String paramName = entry.getKey();
+            for (Map.Entry<PacketArgument, Parameter> entry : parameters.entrySet()) {
+                String paramName = entry.getKey().value();
                 Object value = args.get(paramName);
 
                 if (value == null) {
@@ -137,7 +161,7 @@ public class SimplePacketEventBus implements PacketEventBus {
                 if (packetSender.isOp()) {
                     String packetName = processor.getPacketName(processor);
                     String handlerName = processor.getHandlerName(method);
-                    String allParams = String.join("§7, §b", parameters.keySet());
+                    String allParams = parameters.keySet().stream().map(packetArgument -> packetArgument.value() + ":" + packetArgument.description()).collect(Collectors.joining("§7, §b"));
 
                     packetSender.sendMessage("§c§l[!] §6NuStarCoreBridge §f- 参数错误");
                     packetSender.sendMessage("§7发包: §e" + packetName + " §7| §7方法: §a" + handlerName);
