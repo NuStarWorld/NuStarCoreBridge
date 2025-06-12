@@ -26,11 +26,15 @@ import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
+import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.PacketEventBus;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
 
 @Subscriber
-@DependsOn(classes = "com.germ.germplugin.GermPlugin")
+@DependsOn(
+        classes = "com.germ.germplugin.GermPlugin",
+        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
+)
 @SuppressWarnings("unused")
 public class GermPluginSubscriber implements Listener {
     private volatile PacketEventBus packetEventBus;

@@ -26,11 +26,15 @@ import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
+import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.PacketEventBus;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
 
 @Subscriber
-@DependsOn(classes = "eos.moe.dragoncore.DragonCore")
+@DependsOn(
+        classes = "eos.moe.dragoncore.DragonCore",
+        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
+)
 @SuppressWarnings("unused")
 public class DragonCoreSubscriber implements Listener {
     private volatile PacketEventBus packetEventBus;
@@ -40,10 +44,12 @@ public class DragonCoreSubscriber implements Listener {
         String handleName = event.getData().get(0);
         Map<String, Object> argsMap = new HashMap<>();
         event.getData().remove(0);
-        for (String arg : event.getData()) {
-            String[] split = arg.split("=", -1);
-            if (split.length != 2) continue;
-            argsMap.put(split[0], split[1]);
+        if (!event.getData().isEmpty()){
+            for (String arg : event.getData()) {
+                String[] split = arg.split("=", -1);
+                if (split.length != 2) continue;
+                argsMap.put(split[0], split[1]);
+            }
         }
         packetEventBus.post(new BukkitSender(event.getPlayer()), event.getIdentifier(), handleName, argsMap);
     }

@@ -20,6 +20,8 @@ package top.nustar.nustarcorebridge.api.example;
 
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Component;
+import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
+import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.PacketProcessor;
 import top.nustar.nustarcorebridge.api.PacketSender;
 import top.nustar.nustarcorebridge.api.annotations.PacketArgument;
@@ -29,6 +31,9 @@ import top.nustar.nustarcorebridge.api.annotations.PacketName;
 @Component
 @PacketName("DefaultPacket")
 @SuppressWarnings("unused")
+@DependsOn(
+        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
+)
 public class DefaultPacketProcessor implements PacketProcessor {
 
     @PacketHandler("sendMessage")
