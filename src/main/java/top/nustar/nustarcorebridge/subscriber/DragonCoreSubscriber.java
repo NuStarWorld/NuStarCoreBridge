@@ -33,8 +33,7 @@ import top.nustar.nustarcorebridge.sender.BukkitSender;
 @Subscriber
 @DependsOn(
         classes = "eos.moe.dragoncore.DragonCore",
-        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
-)
+        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false"))
 @SuppressWarnings("unused")
 public class DragonCoreSubscriber implements Listener {
     private volatile PacketEventBus packetEventBus;
@@ -44,7 +43,7 @@ public class DragonCoreSubscriber implements Listener {
         String handleName = event.getData().get(0);
         Map<String, Object> argsMap = new HashMap<>();
         event.getData().remove(0);
-        if (!event.getData().isEmpty()){
+        if (!event.getData().isEmpty()) {
             for (String arg : event.getData()) {
                 String[] split = arg.split("=", -1);
                 if (split.length != 2) continue;

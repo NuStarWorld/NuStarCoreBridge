@@ -31,9 +31,7 @@ import top.nustar.nustarcorebridge.api.annotations.PacketName;
 @Component
 @PacketName("DefaultPacket")
 @SuppressWarnings("unused")
-@DependsOn(
-        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
-)
+@DependsOn(properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false"))
 public class DefaultPacketProcessor implements PacketProcessor {
 
     @PacketHandler("sendMessage")

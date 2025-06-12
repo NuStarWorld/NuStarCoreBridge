@@ -27,5 +27,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PacketHandler {
     String value();
+
     String description() default "无介绍";
 }

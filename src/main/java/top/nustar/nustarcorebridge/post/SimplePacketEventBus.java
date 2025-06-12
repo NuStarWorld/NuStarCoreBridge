@@ -18,6 +18,11 @@
 
 package top.nustar.nustarcorebridge.post;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.*;
+import java.util.stream.Collectors;
 import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
@@ -34,18 +39,10 @@ import top.nustar.nustarcorebridge.api.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.annotations.PacketName;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.*;
-import java.util.stream.Collectors;
-
 @Component
 @Scope(Scope.SINGLETON)
 @SuppressWarnings("unused")
-@DependsOn(
-        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
-)
+@DependsOn(properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false"))
 public class SimplePacketEventBus implements PacketEventBus, Initializable, Destroyable {
     private final Map<String, PacketProcessorDetail> packetProcessors = new HashMap<>();
     static volatile SimplePacketEventBus instance;
@@ -105,7 +102,11 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
                 HandlerDetail handlerDetail = new HandlerDetail(method);
                 this.handlerTable.put(handle, handlerDetail);
                 i++;
-                Log.info("               ┝── " + handler.value() + " " + handlerDetail.parameters.keySet().stream().map(packetArgument -> packetArgument.value() + ":" + packetArgument.description()).collect(Collectors.toList()) + " - " + handler.description());
+                Log.info("               ┝── " + handler.value() + " "
+                        + handlerDetail.parameters.keySet().stream()
+                                .map(packetArgument -> packetArgument.value() + ":" + packetArgument.description())
+                                .collect(Collectors.toList())
+                        + " - " + handler.description());
                 if (i == methods.length) {
                     Log.info("               ┕── 加载 " + methods.length + " 个方法");
                 }
@@ -161,7 +162,9 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
                 if (packetSender.isOp()) {
                     String packetName = processor.getPacketName(processor);
                     String handlerName = processor.getHandlerName(method);
-                    String allParams = parameters.keySet().stream().map(packetArgument -> packetArgument.value() + ":" + packetArgument.description()).collect(Collectors.joining("§7, §b"));
+                    String allParams = parameters.keySet().stream()
+                            .map(packetArgument -> packetArgument.value() + ":" + packetArgument.description())
+                            .collect(Collectors.joining("§7, §b"));
 
                     packetSender.sendMessage("§c§l[!] §6NuStarCoreBridge §f- 参数错误");
                     packetSender.sendMessage("§7发包: §e" + packetName + " §7| §7方法: §a" + handlerName);

@@ -33,8 +33,7 @@ import top.nustar.nustarcorebridge.sender.BukkitSender;
 @Subscriber
 @DependsOn(
         classes = "com.germ.germplugin.GermPlugin",
-        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
-)
+        properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false"))
 @SuppressWarnings("unused")
 public class GermPluginSubscriber implements Listener {
     private volatile PacketEventBus packetEventBus;
