@@ -22,7 +22,10 @@ import team.idealstate.minecraft.next.spigot.api.SpigotPlugin;
 import team.idealstate.sugar.banner.Banner;
 import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.context.Context;
+import team.idealstate.sugar.next.context.annotation.feature.RegisterProperty;
+import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 
+@RegisterProperty(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
 public class NuStarCoreBridge extends SpigotPlugin {
     @Override
     public void onInitialize(Context context) {}
