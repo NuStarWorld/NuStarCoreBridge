@@ -1,7 +1,7 @@
 # <img src="logo.png" height="40px" alt="Logo" style="vertical-align: middle;">核心桥
 <img align="left" src="logo.svg" height="140px" alt="logo"/>    
 
-本插件受益于`Next`框架的依赖反转(Ioc)特性，
+本插件受益于`Next`框架的控制反转(Ioc)特性，
 
 可以帮助你快速创建包括但不限于DragonCore和GermPlugin的发包。
 
