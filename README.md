@@ -1,12 +1,4 @@
-# <img src="logo.png" height="40px" alt="Logo" style="vertical-align: middle;">核心桥
-<img align="left" src="logo.svg" height="140px" alt="logo"/>    
-
-本插件受益于`Next`框架的控制反转(Ioc)特性，
-
-可以帮助你快速创建包括但不限于DragonCore和GermPlugin的发包。
-
-本插件还包装了各种服务，方便你进行多平台开发。   
-
+# NuStar核心桥 —— 各大引擎之间的桥梁
 **使用本插件开发附属默认你已经会使用`Next`框架，这里不做过多赘述。**
 
 ### 在开发前必须要做的第一步
@@ -42,7 +34,7 @@ public class DefaultPacketProcessor implements PacketProcessor {
 
 }
 ```
-做完以上步骤之后，`NuStarCoreBridge`会自动接管龙核，萌芽的发包事件并提交给不同的处理器处理
+做完以上步骤之后，`NuStarCoreBridge`会自动接管龙核，萌芽以及云拾的发包事件并提交给不同的处理器处理
 
 ### 发包参数格式
 | 发包名称          | 方法          | 参数                       | 说明     |
