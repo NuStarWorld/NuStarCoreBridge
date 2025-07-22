@@ -1,41 +1,30 @@
-/*
- *    NuStarCoreBridge
- *    Copyright (C) 2025  NuStar
- *
- *    This program is free software: you can redistribute it and/or modify
- *    it under the terms of the GNU General Public License as published by
- *    the Free Software Foundation, either version 3 of the License, or
- *    (at your option) any later version.
- *
- *    This program is distributed in the hope that it will be useful,
- *    but WITHOUT ANY WARRANTY; without even the implied warranty of
- *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *    GNU General Public License for more details.
- *
- *    You should have received a copy of the GNU General Public License
- *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
+package top.nustar.nustarcorebridge.service.placeholder;
 
-package top.nustar.nustarcorebridge.service;
-
-import eos.moe.dragoncore.network.PacketSender;
-import java.util.HashMap;
-import java.util.Map;
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Service;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.PlaceholderService;
 import top.nustar.nustarcorebridge.utils.Pair;
+import yslelf.cloudpick.bukkit.api.PacketSender;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * @author : NuStar
+ * Date : 2025/7/23 01:29
+ * Website : <a href="https://www.nustar.top">nustar's web</a>
+ * Github : <a href="https://github.com/nustarworld">nustar's github</a>
+ * QQ : 3318029085
+ */
 @Service
-@DependsOn(classes = "eos.moe.dragoncore.DragonCore")
+@DependsOn(classes = "yslelf.cloudpick.bukkit.CloudPick")
 @SuppressWarnings("unused")
-public class DragonCorePlaceholderServiceImpl implements PlaceholderService {
+public class CloudPickPlaceholderServiceImpl implements PlaceholderService {
     @Override
     public void sendPlaceholder(Player player, String placeholder, String value) {
-        Map<String, String> placeholderMap = new HashMap<>();
-        placeholderMap.put(placeholder, value);
-        PacketSender.sendSyncPlaceholder(player, placeholderMap);
+        PacketSender.sendSyncPlaceholder(player, Collections.singletonMap(placeholder, value));
     }
 
     @Override

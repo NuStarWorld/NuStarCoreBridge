@@ -16,7 +16,7 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.service;
+package top.nustar.nustarcorebridge.service.slot;
 
 import eos.moe.dragoncore.api.SlotAPI;
 import eos.moe.dragoncore.network.PacketSender;

@@ -16,7 +16,7 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.service;
+package top.nustar.nustarcorebridge.service.slot;
 
 import com.germ.germplugin.api.GermPacketAPI;
 import com.germ.germplugin.api.GermSlotAPI;

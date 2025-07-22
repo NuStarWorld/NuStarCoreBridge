@@ -40,6 +40,7 @@ public class GermPluginSubscriber implements Listener {
 
     @EventHandler
     public void germPacket(GermReceiveDosEvent event) {
+        if (event.isCancelled()) return;
         String[] args = event.getDosContent().split(" ");
         String handleName = args[0];
         Map<String, Object> argsMap = new HashMap<>();
