@@ -90,15 +90,19 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
         private PacketProcessorDetail(PacketProcessor processor) {
             this.processor = processor;
             Class<? extends PacketProcessor> type = processor.getClass();
-            Method[] methods = type.getDeclaredMethods();
-            this.handlerTable = new LinkedHashMap<>(methods.length);
+            List<Method> methods = new ArrayList<>();
+            for (Method method : type.getDeclaredMethods()) {
+                if (!method.isAnnotationPresent(PacketHandler.class) || "".equals(method.getAnnotation(PacketHandler.class).value())) {
+                    continue;
+                }
+                methods.add(method);
+            }
+            this.handlerTable = new LinkedHashMap<>(methods.size());
             int i = 0;
             for (Method method : methods) {
                 PacketHandler handler = method.getAnnotation(PacketHandler.class);
-                String handle;
-                if (handler == null || "".equals((handle = handler.value()))) {
-                    continue;
-                }
+                String handle = method.getAnnotation(PacketHandler.class).value();
+
                 HandlerDetail handlerDetail = new HandlerDetail(method);
                 this.handlerTable.put(handle, handlerDetail);
                 i++;
@@ -107,8 +111,8 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
                                 .map(packetArgument -> packetArgument.value() + ":" + packetArgument.description())
                                 .collect(Collectors.toList())
                         + " - " + handler.description());
-                if (i == methods.length) {
-                    Log.info("               ┕── 加载 " + methods.length + " 个方法");
+                if (i == methods.size()) {
+                    Log.info("               ┕── 加载 " + methods.size() + " 个方法");
                 }
             }
         }
