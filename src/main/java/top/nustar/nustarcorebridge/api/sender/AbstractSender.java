@@ -16,14 +16,13 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.sender;
+package top.nustar.nustarcorebridge.api.sender;
 
 import lombok.Getter;
-import top.nustar.nustarcorebridge.api.PacketSender;
 
 @Getter
 public abstract class AbstractSender<T> implements PacketSender<T> {
-    T sender;
+    protected T sender;
 
     protected AbstractSender(T sender) {
         this.sender = sender;

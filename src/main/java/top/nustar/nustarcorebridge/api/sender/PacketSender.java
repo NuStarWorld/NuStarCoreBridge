@@ -16,7 +16,7 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api;
+package top.nustar.nustarcorebridge.api.sender;
 
 @SuppressWarnings("unused")
 public interface PacketSender<T> {

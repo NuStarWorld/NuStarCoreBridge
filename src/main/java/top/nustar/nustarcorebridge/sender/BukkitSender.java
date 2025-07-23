@@ -19,6 +19,7 @@
 package top.nustar.nustarcorebridge.sender;
 
 import org.bukkit.entity.Player;
+import top.nustar.nustarcorebridge.api.sender.AbstractSender;
 
 public class BukkitSender extends AbstractSender<Player> {
     public BukkitSender(Player sender) {

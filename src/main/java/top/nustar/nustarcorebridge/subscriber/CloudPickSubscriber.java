@@ -32,7 +32,7 @@ public class CloudPickSubscriber implements Listener {
     public void on(CustomPacketEvent event) {
         if (event.isCancelled()) return;
         String handleName = event.getData().get(0);
-        Map<String, Object> argsMap = new HashMap<>();
+        Map<String, String> argsMap = new HashMap<>();
         event.getData().remove(0);
         if (!event.getData().isEmpty()) {
             for (String arg : event.getData()) {

@@ -25,6 +25,7 @@ import java.util.Map;
         classes = "priv.seventeen.artist.arcartx.ArcartX",
         properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
 )
+@SuppressWarnings("unused")
 public class ArcartXSubscriber implements Listener {
     private volatile PacketEventBus packetEventBus;
     @EventHandler

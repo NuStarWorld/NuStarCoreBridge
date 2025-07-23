@@ -29,7 +29,7 @@ import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.PacketEventBus;
 import top.nustar.nustarcorebridge.api.PacketProcessor;
-import top.nustar.nustarcorebridge.api.PacketSender;
+import top.nustar.nustarcorebridge.api.sender.PacketSender;
 
 /**
  * @author : NuStar Date : 2025/6/12 22:01 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
@@ -52,7 +52,7 @@ public class SimpleSubPluginPacketEventBus implements PacketEventBus {
     }
 
     @Override
-    public void post(PacketSender<?> packetSender, String packetName, String handleName, Map<String, Object> argsMap) {
+    public void post(PacketSender<?> packetSender, String packetName, String handleName, Map<String, String> argsMap) {
         getDelegate().post(packetSender, packetName, handleName, argsMap);
     }
 }

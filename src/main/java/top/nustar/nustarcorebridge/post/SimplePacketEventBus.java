@@ -31,13 +31,13 @@ import team.idealstate.sugar.next.context.annotation.feature.Scope;
 import team.idealstate.sugar.next.context.lifecycle.Destroyable;
 import team.idealstate.sugar.next.context.lifecycle.Initializable;
 import team.idealstate.sugar.validate.Validation;
-import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
-import top.nustar.nustarcorebridge.api.PacketEventBus;
-import top.nustar.nustarcorebridge.api.PacketProcessor;
-import top.nustar.nustarcorebridge.api.PacketSender;
+import top.nustar.nustarcorebridge.api.*;
 import top.nustar.nustarcorebridge.api.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.annotations.PacketName;
+import top.nustar.nustarcorebridge.api.context.PacketContext;
+import top.nustar.nustarcorebridge.api.converter.ArgumentConverter;
+import top.nustar.nustarcorebridge.api.sender.PacketSender;
 
 @Component
 @Scope(Scope.SINGLETON)
@@ -71,7 +71,7 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
     }
 
     @Override
-    public void post(PacketSender<?> packetSender, String packetName, String handleName, Map<String, Object> argsMap) {
+    public void post(PacketSender<?> packetSender, String packetName, String handleName, Map<String, String> argsMap) {
         PacketProcessorDetail packetProcessorDetail = packetProcessors.get(packetName);
         if (packetProcessorDetail == null) {
             return;
@@ -113,7 +113,7 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
             }
         }
 
-        public void invoke(PacketSender<?> packetSender, String handleName, Map<String, Object> args)
+        public void invoke(PacketSender<?> packetSender, String handleName, Map<String, String> args)
                 throws InvocationTargetException, IllegalAccessException {
             HandlerDetail detail = handlerTable.get(handleName);
             if (detail == null) {
@@ -142,7 +142,7 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
             }
         }
 
-        public void invoke(PacketSender<?> packetSender, PacketProcessor processor, Map<String, Object> args)
+        public void invoke(PacketSender<?> packetSender, PacketProcessor processor, Map<String, String> args)
                 throws InvocationTargetException, IllegalAccessException {
             Object[] argObjects = new Object[parameters.size() + 1];
             int i = 0;
@@ -151,12 +151,16 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
 
             for (Map.Entry<PacketArgument, Parameter> entry : parameters.entrySet()) {
                 String paramName = entry.getKey().value();
-                Object value = args.get(paramName);
+                Class<? extends ArgumentConverter> converter = entry.getKey().converter();
+                String param = args.get(paramName);
 
-                if (value == null) {
+                Optional<Object> convert = convert(PacketContext.of(packetSender, new ArrayList<>(args.values())), param, converter);
+
+                if (!convert.isPresent()) {
                     missingParams.add(paramName);
+                    continue;
                 }
-                argObjects[i++] = entry.getValue().getType().cast(value);
+                argObjects[i++] = entry.getValue().getType().cast(convert.get());
             }
             if (!missingParams.isEmpty()) {
                 if (packetSender.isOp()) {
@@ -174,6 +178,15 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
                 return;
             }
             method.invoke(processor, argObjects);
+        }
+
+        private Optional<Object> convert(PacketContext context, String value, Class<? extends ArgumentConverter> converter) {
+            try {
+                return converter.newInstance().convert(context, value);
+            } catch (InstantiationException | IllegalAccessException e) {
+                Log.error(e);
+                return Optional.of(value);
+            }
         }
     }
 }

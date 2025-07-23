@@ -43,7 +43,7 @@ public class GermPluginSubscriber implements Listener {
         if (event.isCancelled()) return;
         String[] args = event.getDosContent().split(" ");
         String handleName = args[0];
-        Map<String, Object> argsMap = new HashMap<>();
+        Map<String, String> argsMap = new HashMap<>();
         for (int i = 1; i < args.length; i++) {
             String[] split = args[i].split("=", -1);
             if (split.length != 2) continue;
