@@ -19,7 +19,6 @@
 package top.nustar.nustarcorebridge.subscriber;
 
 import eos.moe.dragoncore.api.gui.event.CustomPacketEvent;
-import java.util.HashMap;
 import java.util.Map;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -35,22 +34,14 @@ import top.nustar.nustarcorebridge.sender.BukkitSender;
         classes = "eos.moe.dragoncore.DragonCore",
         properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false"))
 @SuppressWarnings("unused")
-public class DragonCoreSubscriber implements Listener {
+public class DragonCoreSubscriber extends AbstractPostPacket implements Listener {
     private volatile PacketEventBus packetEventBus;
 
     @EventHandler
     public void onPacket(CustomPacketEvent event) {
         if (event.isCancelled()) return;
         String handleName = event.getData().get(0);
-        Map<String, String> argsMap = new HashMap<>();
-        event.getData().remove(0);
-        if (!event.getData().isEmpty()) {
-            for (String arg : event.getData()) {
-                String[] split = arg.split("=", -1);
-                if (split.length != 2) continue;
-                argsMap.put(split[0], split[1]);
-            }
-        }
+        Map<String, String> argsMap = getArgs(event.getData());
         packetEventBus.post(new BukkitSender(event.getPlayer()), event.getIdentifier(), handleName, argsMap);
     }
 

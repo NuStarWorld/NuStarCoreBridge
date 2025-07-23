@@ -10,7 +10,6 @@ import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.PacketEventBus;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -26,21 +25,13 @@ import java.util.Map;
         properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false")
 )
 @SuppressWarnings("unused")
-public class ArcartXSubscriber implements Listener {
+public class ArcartXSubscriber extends AbstractPostPacket implements Listener {
     private volatile PacketEventBus packetEventBus;
     @EventHandler
     public void on(ClientCustomPacketEvent event) {
         if (event.isCancelled()) return;
         String handleName = event.getData().get(0);
-        Map<String, String> argsMap = new HashMap<>();
-        event.getData().remove(0);
-        if (!event.getData().isEmpty()) {
-            for (String arg : event.getData()) {
-                String[] split = arg.split("=", -1);
-                if (split.length != 2) continue;
-                argsMap.put(split[0], split[1]);
-            }
-        }
+        Map<String, String> argsMap = getArgs(event.getData());
         packetEventBus.post(new BukkitSender(event.getPlayer()), event.getId(), handleName, argsMap);
     }
 
