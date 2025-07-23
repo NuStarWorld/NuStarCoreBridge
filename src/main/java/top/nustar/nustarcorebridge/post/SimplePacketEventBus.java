@@ -90,13 +90,10 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
         private PacketProcessorDetail(PacketProcessor processor) {
             this.processor = processor;
             Class<? extends PacketProcessor> type = processor.getClass();
-            List<Method> methods = new ArrayList<>();
-            for (Method method : type.getDeclaredMethods()) {
-                if (!method.isAnnotationPresent(PacketHandler.class) || "".equals(method.getAnnotation(PacketHandler.class).value())) {
-                    continue;
-                }
-                methods.add(method);
-            }
+            List<Method> methods = Arrays.stream(type.getDeclaredMethods())
+                    .filter(method -> method.isAnnotationPresent(PacketHandler.class))
+                    .filter(method -> !method.getAnnotation(PacketHandler.class).value().isEmpty())
+                    .collect(Collectors.toList());
             this.handlerTable = new LinkedHashMap<>(methods.size());
             int i = 0;
             for (Method method : methods) {
