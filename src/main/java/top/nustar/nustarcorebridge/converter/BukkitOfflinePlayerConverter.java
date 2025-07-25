@@ -9,21 +9,21 @@ import java.util.UUID;
 
 /**
  * @author : NuStar
- * Date : 2025/7/24 00:47
+ * Date : 2025/7/25 22:18
  * Website : <a href="https://www.nustar.top">nustar's web</a>
  * Github : <a href="https://github.com/nustarworld">nustar's github</a>
  * QQ : 3318029085
  */
-@SuppressWarnings("unused")
-public class BukkitPlayerConverter implements ArgumentConverter {
+@SuppressWarnings("unuesd")
+public class BukkitOfflinePlayerConverter implements ArgumentConverter {
     @Override
     public Optional<Object> convert(PacketContext context, String value) {
         UUID uuid;
         try {
             uuid = UUID.fromString(value);
-            return Optional.ofNullable(Bukkit.getPlayer(uuid));
+            return Optional.ofNullable(Bukkit.getOfflinePlayer(uuid));
         } catch (IllegalArgumentException e) {
-            return Optional.ofNullable(Bukkit.getPlayer(value));
+            return Optional.empty();
         }
     }
 }
