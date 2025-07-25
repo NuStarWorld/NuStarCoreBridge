@@ -37,7 +37,6 @@ public class CoreBridgePacket implements PacketProcessor {
             @PacketArgument(value = "placeholder", description = "Papi 变量") String papiPlaceholder
     ) {
         String parsePapi = PlaceholderAPI.setPlaceholders(offlinePlayer, papiPlaceholder);
-        System.out.println(offlinePlayer.getUniqueId().toString());
         String placeholder = String.format("NuStarCoreBridge_PapiPlaceholder_%s_%s", offlinePlayer.getUniqueId().toString(), papiPlaceholder);
         placeholderService.sendPlaceholder(sender.getSender(), placeholder, parsePapi);
     }
