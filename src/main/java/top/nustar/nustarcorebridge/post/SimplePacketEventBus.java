@@ -154,6 +154,10 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
                 String paramName = entry.getKey().value();
                 Class<? extends ArgumentConverter> converter = entry.getKey().converter();
                 String param = args.get(paramName);
+                if (param == null) {
+                    missingParams.add(paramName);
+                    continue;
+                }
 
                 Optional<Object> convert = convert(PacketContext.of(packetSender, new ArrayList<>(args.values())), param, converter);
 
