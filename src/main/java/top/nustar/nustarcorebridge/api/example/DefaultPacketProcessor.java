@@ -23,10 +23,10 @@ import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.PacketProcessor;
-import top.nustar.nustarcorebridge.api.sender.PacketSender;
 import top.nustar.nustarcorebridge.api.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.annotations.PacketName;
+import top.nustar.nustarcorebridge.api.sender.PacketSender;
 
 @Component
 @PacketName("DefaultPacket")

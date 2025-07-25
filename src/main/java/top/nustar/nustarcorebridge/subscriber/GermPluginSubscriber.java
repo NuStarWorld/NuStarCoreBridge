@@ -19,7 +19,6 @@
 package top.nustar.nustarcorebridge.subscriber;
 
 import com.germ.germplugin.api.event.GermReceiveDosEvent;
-
 import java.util.Arrays;
 import java.util.Map;
 import org.bukkit.event.EventHandler;

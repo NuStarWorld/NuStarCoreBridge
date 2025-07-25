@@ -92,7 +92,8 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
             Class<? extends PacketProcessor> type = processor.getClass();
             List<Method> methods = Arrays.stream(type.getDeclaredMethods())
                     .filter(method -> method.isAnnotationPresent(PacketHandler.class))
-                    .filter(method -> !method.getAnnotation(PacketHandler.class).value().isEmpty())
+                    .filter(method ->
+                            !method.getAnnotation(PacketHandler.class).value().isEmpty())
                     .collect(Collectors.toList());
             this.handlerTable = new LinkedHashMap<>(methods.size());
             int i = 0;
@@ -159,7 +160,8 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
                     continue;
                 }
 
-                Optional<Object> convert = convert(PacketContext.of(packetSender, new ArrayList<>(args.values())), param, converter);
+                Optional<Object> convert =
+                        convert(PacketContext.of(packetSender, new ArrayList<>(args.values())), param, converter);
 
                 if (!convert.isPresent()) {
                     missingParams.add(paramName);
@@ -185,7 +187,8 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
             method.invoke(processor, argObjects);
         }
 
-        private Optional<Object> convert(PacketContext context, String value, Class<? extends ArgumentConverter> converter) {
+        private Optional<Object> convert(
+                PacketContext context, String value, Class<? extends ArgumentConverter> converter) {
             try {
                 return converter.newInstance().convert(context, value);
             } catch (InstantiationException | IllegalAccessException e) {

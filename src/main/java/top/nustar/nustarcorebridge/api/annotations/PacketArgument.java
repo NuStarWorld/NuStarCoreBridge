@@ -18,13 +18,12 @@
 
 package top.nustar.nustarcorebridge.api.annotations;
 
-import top.nustar.nustarcorebridge.api.converter.ArgumentConverter;
-import top.nustar.nustarcorebridge.api.converter.SimpleArgumentConverter;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import top.nustar.nustarcorebridge.api.converter.ArgumentConverter;
+import top.nustar.nustarcorebridge.api.converter.SimpleArgumentConverter;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

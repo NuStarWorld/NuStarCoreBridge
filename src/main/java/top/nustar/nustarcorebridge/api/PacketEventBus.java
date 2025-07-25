@@ -18,9 +18,8 @@
 
 package top.nustar.nustarcorebridge.api;
 
-import top.nustar.nustarcorebridge.api.sender.PacketSender;
-
 import java.util.Map;
+import top.nustar.nustarcorebridge.api.sender.PacketSender;
 
 public interface PacketEventBus {
     void post(PacketSender<?> packetSender, String packetName, String handleName, Map<String, String> argsMap);
