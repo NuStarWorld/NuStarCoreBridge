@@ -16,11 +16,12 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api;
+package top.nustar.nustarcorebridge.api.packet;
 
 import java.util.Map;
-import top.nustar.nustarcorebridge.api.sender.PacketSender;
+import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
 
 public interface PacketEventBus {
+    PacketEventBus addPacketProcessors(Class<? extends PacketProcessor> packetProcessors);
     void post(PacketSender<?> packetSender, String packetName, String handleName, Map<String, String> argsMap);
 }

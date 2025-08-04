@@ -27,13 +27,16 @@ import team.idealstate.sugar.next.context.annotation.feature.Scope;
 import team.idealstate.sugar.validate.Validation;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
-import top.nustar.nustarcorebridge.api.PacketEventBus;
-import top.nustar.nustarcorebridge.api.PacketProcessor;
-import top.nustar.nustarcorebridge.api.sender.PacketSender;
+import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
+import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
+import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
 
 /**
- * @author : NuStar Date : 2025/6/12 22:01 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
- *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
+ * @author : NuStar
+ * Date : 2025/6/12 22:01
+ * Website : <a href="https://www.nustar.top">nustar's web</a>
+ * Github : <a href="https://github.com/nustarworld">nustar's github</a>
+ * QQ : 3318029085
  */
 @Component
 @Scope(Scope.SINGLETON)
@@ -54,5 +57,10 @@ public class SimpleSubPluginPacketEventBus implements PacketEventBus {
     @Override
     public void post(PacketSender<?> packetSender, String packetName, String handleName, Map<String, String> argsMap) {
         getDelegate().post(packetSender, packetName, handleName, argsMap);
+    }
+
+    @Override
+    public PacketEventBus addPacketProcessors(Class<? extends PacketProcessor> packetProcessorClazz) {
+        return getDelegate().addPacketProcessors(packetProcessorClazz);
     }
 }

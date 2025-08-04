@@ -32,12 +32,14 @@ import team.idealstate.sugar.next.context.lifecycle.Destroyable;
 import team.idealstate.sugar.next.context.lifecycle.Initializable;
 import team.idealstate.sugar.validate.Validation;
 import top.nustar.nustarcorebridge.api.*;
-import top.nustar.nustarcorebridge.api.annotations.PacketArgument;
-import top.nustar.nustarcorebridge.api.annotations.PacketHandler;
-import top.nustar.nustarcorebridge.api.annotations.PacketName;
-import top.nustar.nustarcorebridge.api.context.PacketContext;
-import top.nustar.nustarcorebridge.api.converter.ArgumentConverter;
-import top.nustar.nustarcorebridge.api.sender.PacketSender;
+import top.nustar.nustarcorebridge.api.packet.annotations.PacketArgument;
+import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
+import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
+import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
+import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
+import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
+import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
 
 @Component
 @Scope(Scope.SINGLETON)
@@ -51,6 +53,25 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
     public void initialize() {
         Validation.isNull(instance, "PacketEventBus is already initialized");
         instance = this;
+    }
+
+    @Override
+    public PacketEventBus addPacketProcessors(Class<? extends PacketProcessor> packetProcessorClazz) {
+        try {
+            PacketProcessor packetProcessor = packetProcessorClazz.getDeclaredConstructor().newInstance();
+            String packetName = packetProcessor.getPacketName(packetProcessor);
+            this.packetProcessors.compute(packetName, (key, value) -> {
+                if (value != null) {
+                    throw new IllegalArgumentException("PacketName " + packetName + " is already registered");
+                }
+                Log.info("Registering... " + packetName);
+                return new PacketProcessorDetail(packetProcessor);
+            });
+            return this;
+        } catch (Throwable e) {
+            Log.error(e);
+            return this;
+        }
     }
 
     @Override
