@@ -1,25 +1,20 @@
 # NuStar核心桥 —— 各大引擎之间的桥梁
-**使用本插件开发附属默认你已经会使用`Next`框架，这里不做过多赘述。**
 
-### 在开发前必须要做的第一步
-在插件主类添加`@EnableNuStarCoreBridge`注解 否则获取不到服务，也注入不了附属的任何组件
-```java
-@EnableNuStarCoreBridge
-public class NuStarParty extends SpigotPlugin {
-    // .....省略一堆代码
-}
-```
+### 插件优势
+1. 跨平台发包
+2. 跨平台服务调用
+3. 人类友好的API，错误提示
+
+### 常规用法
+请查阅`NuStarCoreBridgeAPI`类下的接口方法
 
 ### 自定义发包处理器
-一段简单的示例代码
+一段简单的示例代码，更多内容请查阅`DefaultPacketProcessor`类下的示例代码
 ```java
-@Component
 @PacketName("DefaultPacket")
-@DependsOn(classes = "top.nustar.nustarcorebridge.NuStarCoreBridge")
 public class DefaultPacketProcessor implements PacketProcessor {
 
     /**
-     * 所有使用@PacketHandler的方法，都需要遵守一个唯一约定——第一个参数是PacketSender
      * @param packetSender 发送者 这里指代Bukkit的玩家
      * @param name 参数名
      * @param message 参数名
@@ -35,42 +30,43 @@ public class DefaultPacketProcessor implements PacketProcessor {
 
 }
 ```
-像这样就创建一个发包处理器完毕了，在这个类下写的方法都归属于`DefaultPacket`这个名字的发包。你无需显式的向某个地方注册这个类，`Next`框架会自己扫描注册。
+注册方法
+```java
+public class Plugin extends JavaPlugin {
+    @Override
+    public void onEnable() {
+        NuStarCoreBridgeAPI.addPacketProcessors(DefaultPacketProcessor.class);
+        // 支持链式调用
+        NuStarCoreBridgeAPI
+                .addPacketProcessors(Packet1.class)
+                .addPacketProcessors(Packet2.class)
+                .addPacketProcessors(Packet3.class);
+    }
+}
+```
+注册发包后，你不管使用龙核、萌芽、ArcartX还是云拾，你都能按照一定的格式发送数据包。从此告别手动监听发包事件处理数据。
 
 ### 发包参数格式
 | 发包名称          | 方法          | 参数                       | 说明     |
 |:--------------|:------------|:-------------------------|:-------|
 | DefaultPacket | sendMessage | name={arg},message={arg} | 一个测试发包 |    
 
-龙核: 方法.发包('DefaultPacket', 'sendMessage', 'name=测试名字', 'message=测试消息')    
-萌芽: DefaultPacket<->sendMessage name=测试名字 message=测试消息  
-ArcartX(未测试): Packet.send("DefaultPacket", "sendMessage", "name=测试名字", "message=测试消息")  
-云拾: `由于作者没有购买云拾也没使用过，因此不知晓云拾的发包格式`
+`龙核`: 方法.发包('DefaultPacket', 'sendMessage', 'name=测试名字', 'message=测试消息')    
+`萌芽`: DefaultPacket<->sendMessage name=测试名字 message=测试消息  
+`ArcartX(未测试)`: Packet.send("DefaultPacket", "sendMessage", "name=测试名字", "message=测试消息")  
+`云拾`: Packet.sendData("DefaultPacket", "sendMessage", "name=测试名字", "message=测试消息")
 
 参数没有固定顺序，不支持重载方法。
 
 ### 服务调用
 ```java
-@Component
 @PacketName("DefaultPacket")
-@DependsOn(classes = "top.nustar.nustarcorebridge.NuStarCoreBridge")
 public class DefaultPacketProcessor implements PacketProcessor {
-    private volatile SlotService slotService;
-
-    /**
-     * 使用@Autowired注解能让你无需显式的使用new关键字或者类如getInstance()来获取服务
-     * Next框架会自动将实现了该接口的类注入到字段，如果同时安装了多个引擎，那就看谁抢的快了 :(
-     * @param slotService 槽位服务
-     */
-    @Autowired
-    public void setSlotService(SlotService slotService) {
-        this.slotService = slotService;
-    }
     
     @PacketHandler(value = "loadItem", description = "向客户端发送一个假物品")
     public void loadItem(PacketSender<Player> packetSender) {
         Player sender = packetSender.getSender();
-        slotService.putSlotItem(sender, "测试槽位", new ItemStack(Material.STONE, 1));
+        NuStarCoreBridgeAPI.putSlotItem(sender, "测试槽位", new ItemStack(Material.STONE, 1));
     }
 }
 ```
