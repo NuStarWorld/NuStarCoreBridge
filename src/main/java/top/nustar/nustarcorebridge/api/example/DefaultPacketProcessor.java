@@ -27,6 +27,7 @@ import top.nustar.nustarcorebridge.api.packet.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
 import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
+import top.nustar.nustarcorebridge.converter.BukkitPlayerConverter;
 
 @Component
 @PacketName("DefaultPacket")
@@ -34,19 +35,36 @@ import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
 @DependsOn(properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false"))
 public class DefaultPacketProcessor implements PacketProcessor {
 
-    @PacketHandler("sendMessage")
-    public void runPacket(
+    /**
+     * 向执行发包的玩家发送一条消息
+     * @param packetSender 执行发包的玩家
+     * @param message 要发送的消息
+     */
+    @PacketHandler(value = "sendMessage", description = "向发包执行者发送一条消息")
+    public void sendMessage(
             PacketSender<Player> packetSender,
-            @PacketArgument("name") String name,
-            @PacketArgument("message") String message) {
-        System.out.printf("DefaultPacketProcessor.runPacket(%s,%s, %s)\n", packetSender, name, message);
+            @PacketArgument(value = "message", description = "要发送的消息") String message) {
+        packetSender.getSender().sendMessage(message);
     }
 
-    @PacketHandler("sendPlayerMessage")
+    /**
+     * 向指定玩家发送一条消息
+     * @param target 目标玩家
+     * @param message 要发送的消息
+     */
+    @PacketHandler(value = "sendPlayerMessage", description = "向指定玩家发送一条消息")
     public void sendPlayerMessage(
-            PacketSender<Player> packetSender,
-            @PacketArgument("target") String targetName,
-            @PacketArgument("message") String message) {
-        System.out.printf("DefaultPacketProcessor.sendPlayerMessage(%s,%s, %s)\n", packetSender, targetName, message);
+            @PacketArgument(value = "target", description = "目标玩家", converter = BukkitPlayerConverter.class) Player target,
+            @PacketArgument(value = "message", description = "要发送的消息") String message
+    ) {
+        target.sendMessage(message);
+    }
+
+    /**
+     * 向控制台发送一条消息
+     */
+    @PacketHandler(value = "sendConsoleMessage", description = "向控制台输出一条消息")
+    public void sendConsoleMessage() {
+        System.out.println("ConsoleMessage");
     }
 }
