@@ -40,6 +40,7 @@ import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
 import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
 import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
 import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
+import top.nustar.nustarcorebridge.exception.PacketArgumentException;
 
 @Component
 @Scope(Scope.SINGLETON)
@@ -150,26 +151,33 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
         private final Method method;
         private final Map<PacketArgument, Parameter> parameters;
 
-        private HandlerDetail(Method method) {
+        private HandlerDetail(Method method) throws PacketArgumentException {
             this.method = method;
             method.setAccessible(true);
-            Parameter[] parameters1 = method.getParameters();
-            this.parameters = new LinkedHashMap<>(parameters1.length);
-            for (Parameter parameter : parameters1) {
+            Parameter[] parameterArray = method.getParameters();
+            this.parameters = new LinkedHashMap<>(parameterArray.length);
+            for (Parameter parameter : parameterArray) {
+                if (PacketSender.class.isAssignableFrom(parameter.getType())) continue;
                 PacketArgument argument = parameter.getAnnotation(PacketArgument.class);
                 String argumentName;
                 if (argument == null || "".equals(argument.value())) {
-                    continue;
+                    Log.warn(method.getName() + " PacketArgument is null or empty");
+                    throw new PacketArgumentException(method.getName() + "PacketArgument is null or empty");
                 }
-                parameters.put(argument, parameter);
+                this.parameters.put(argument, parameter);
             }
         }
 
         public void invoke(PacketSender<?> packetSender, PacketProcessor processor, Map<String, String> args)
                 throws InvocationTargetException, IllegalAccessException {
-            Object[] argObjects = new Object[parameters.size() + 1];
+            Parameter[] parameterArray = method.getParameters();
+            Object[] argObjects = new Object[parameterArray.length];
             int i = 0;
-            argObjects[i++] = packetSender;
+
+            if (parameterArray.length > 0 && PacketSender.class.isAssignableFrom(parameterArray[0].getType())) {
+                argObjects[i++] = packetSender;
+            }
+
             List<String> missingParams = new ArrayList<>();
 
             for (Map.Entry<PacketArgument, Parameter> entry : parameters.entrySet()) {
