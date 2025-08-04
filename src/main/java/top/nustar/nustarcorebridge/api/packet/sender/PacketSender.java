@@ -16,22 +16,13 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api;
-
-import java.util.Map;
-import org.bukkit.entity.Player;
-import top.nustar.nustarcorebridge.utils.Pair;
+package top.nustar.nustarcorebridge.api.packet.sender;
 
 @SuppressWarnings("unused")
-public interface PlaceholderService {
-    void sendPlaceholder(Player player, String placeholder, String value);
+public interface PacketSender<T> {
+    T getSender();
 
-    void sendPlaceholderMap(Player player, Map<String, String> placeholderMap);
+    void sendMessage(String message);
 
-    @SuppressWarnings("unchecked")
-    void sendPlaceholders(Player player, Pair<String, String>... pairs);
-
-    void removePlaceholder(Player player, String placeholder, boolean startsWith);
-
-    void removePlaceholders(Player player, String... placeholder);
+    boolean isOp();
 }

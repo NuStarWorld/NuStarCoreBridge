@@ -16,17 +16,14 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.converter;
+package top.nustar.nustarcorebridge.api.service;
 
-import java.util.Optional;
-import team.idealstate.sugar.validate.annotation.NotNull;
-import top.nustar.nustarcorebridge.api.context.PacketContext;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-/**
- * @author : NuStar Date : 2025/7/23 22:54 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
- *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
- */
-public interface ArgumentConverter {
-    @NotNull
-    Optional<Object> convert(@NotNull PacketContext context, @NotNull String value);
+@SuppressWarnings("unused")
+public interface SlotService {
+    void putSlotItem(Player player, String identifier, ItemStack item);
+
+    ItemStack getItemFromIdentifier(Player player, String identifier);
 }

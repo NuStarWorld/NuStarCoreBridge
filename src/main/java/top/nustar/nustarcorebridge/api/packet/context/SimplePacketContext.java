@@ -16,21 +16,23 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.annotations;
+package top.nustar.nustarcorebridge.api.packet.context;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-import top.nustar.nustarcorebridge.api.converter.ArgumentConverter;
-import top.nustar.nustarcorebridge.api.converter.SimpleArgumentConverter;
+import java.util.List;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
 
-@Target(ElementType.PARAMETER)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface PacketArgument {
-    String value();
-
-    Class<? extends ArgumentConverter> converter() default SimpleArgumentConverter.class;
-
-    String description() default "无介绍";
+/**
+ * @author : NuStar
+ * Date : 2025/7/23 23:00
+ * Website : <a href="https://www.nustar.top">nustar's web</a>
+ * Github : <a href="https://github.com/nustarworld">nustar's github</a>
+ * QQ : 3318029085
+ */
+@RequiredArgsConstructor
+@Getter
+public class SimplePacketContext implements PacketContext {
+    private final PacketSender<?> packetSender;
+    private final List<String> arguments;
 }

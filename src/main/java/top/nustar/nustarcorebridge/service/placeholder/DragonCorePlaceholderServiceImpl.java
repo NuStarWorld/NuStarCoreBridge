@@ -25,7 +25,7 @@ import java.util.Map;
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Service;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
-import top.nustar.nustarcorebridge.api.PlaceholderService;
+import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.utils.Pair;
 
 @Service

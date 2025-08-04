@@ -16,14 +16,21 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api;
+package top.nustar.nustarcorebridge.api.packet.converter;
 
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
+import java.util.Optional;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 
-@SuppressWarnings("unused")
-public interface SlotService {
-    void putSlotItem(Player player, String identifier, ItemStack item);
-
-    ItemStack getItemFromIdentifier(Player player, String identifier);
+/**
+ * @author : NuStar
+ * Date : 2025/7/23 23:26
+ * Website : <a href="https://www.nustar.top">nustar's web</a>
+ * Github : <a href="https://github.com/nustarworld">nustar's github</a>
+ * QQ : 3318029085
+ */
+public class SimpleArgumentConverter implements ArgumentConverter {
+    @Override
+    public Optional<Object> convert(PacketContext context, String value) {
+        return Optional.of(value);
+    }
 }

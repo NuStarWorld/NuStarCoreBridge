@@ -24,7 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import team.idealstate.sugar.next.context.annotation.component.Service;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
-import top.nustar.nustarcorebridge.api.SlotService;
+import top.nustar.nustarcorebridge.api.service.SlotService;
 
 @Service
 @DependsOn(classes = "eos.moe.dragoncore.DragonCore")

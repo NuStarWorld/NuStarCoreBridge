@@ -16,19 +16,15 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api;
+package top.nustar.nustarcorebridge.api.packet.sender;
 
-import java.lang.reflect.Method;
-import top.nustar.nustarcorebridge.api.annotations.PacketHandler;
-import top.nustar.nustarcorebridge.api.annotations.PacketName;
+import lombok.Getter;
 
-public interface PacketProcessor {
-    default String getPacketName(PacketProcessor packetProcessor) {
-        PacketName packetName = packetProcessor.getClass().getAnnotation(PacketName.class);
-        return packetName.value();
-    }
+@Getter
+public abstract class AbstractSender<T> implements PacketSender<T> {
+    protected T sender;
 
-    default String getHandlerName(Method method) {
-        return method.getAnnotation(PacketHandler.class).value();
+    protected AbstractSender(T sender) {
+        this.sender = sender;
     }
 }

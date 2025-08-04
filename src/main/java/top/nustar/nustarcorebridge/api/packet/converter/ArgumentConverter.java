@@ -16,20 +16,20 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.context;
+package top.nustar.nustarcorebridge.api.packet.converter;
 
-import java.util.List;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import top.nustar.nustarcorebridge.api.sender.PacketSender;
+import java.util.Optional;
+import team.idealstate.sugar.validate.annotation.NotNull;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 
 /**
- * @author : NuStar Date : 2025/7/23 23:00 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
- *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
+ * @author : NuStar
+ * Date : 2025/7/23 22:54
+ * Website : <a href="https://www.nustar.top">nustar's web</a>
+ * Github : <a href="https://github.com/nustarworld">nustar's github</a>
+ * QQ : 3318029085
  */
-@RequiredArgsConstructor
-@Getter
-public class SimplePacketContext implements PacketContext {
-    private final PacketSender<?> packetSender;
-    private final List<String> arguments;
+public interface ArgumentConverter {
+    @NotNull
+    Optional<Object> convert(@NotNull PacketContext context, @NotNull String value);
 }

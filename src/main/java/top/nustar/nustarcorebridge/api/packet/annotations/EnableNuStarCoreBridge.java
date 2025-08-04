@@ -16,7 +16,7 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.annotations;
+package top.nustar.nustarcorebridge.api.packet.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -27,8 +27,11 @@ import team.idealstate.sugar.next.context.annotation.feature.Scan;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 
 /**
- * @author : NuStar Date : 2025/6/12 20:39 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
- *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
+ * @author : NuStar
+ * Date : 2025/6/12 20:39
+ * Website : <a href="https://www.nustar.top">nustar's web</a>
+ * Github : <a href="https://github.com/nustarworld">nustar's github</a>
+ * QQ : 3318029085
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

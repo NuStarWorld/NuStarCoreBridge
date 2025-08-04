@@ -16,15 +16,29 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.sender;
+package top.nustar.nustarcorebridge.api.packet.context;
 
-import lombok.Getter;
+import java.util.List;
+import team.idealstate.sugar.validate.annotation.NotNull;
+import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
 
-@Getter
-public abstract class AbstractSender<T> implements PacketSender<T> {
-    protected T sender;
+/**
+ * @author : NuStar
+ * Date : 2025/7/23 22:59
+ * Website : <a href="https://www.nustar.top">nustar's web</a>
+ * Github : <a href="https://github.com/nustarworld">nustar's github</a>
+ * QQ : 3318029085
+ */
+@SuppressWarnings("unused")
+public interface PacketContext {
+    @NotNull
+    PacketSender<?> getPacketSender();
 
-    protected AbstractSender(T sender) {
-        this.sender = sender;
+    @NotNull
+    List<String> getArguments();
+
+    @NotNull
+    static PacketContext of(@NotNull PacketSender<?> sender, @NotNull List<String> argument) {
+        return new SimplePacketContext(sender, argument);
     }
 }

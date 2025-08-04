@@ -16,15 +16,21 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.annotations;
+package top.nustar.nustarcorebridge.api.packet.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
+import top.nustar.nustarcorebridge.api.packet.converter.SimpleArgumentConverter;
 
-@Target(ElementType.TYPE)
+@Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface PacketName {
+public @interface PacketArgument {
     String value();
+
+    Class<? extends ArgumentConverter> converter() default SimpleArgumentConverter.class;
+
+    String description() default "无介绍";
 }

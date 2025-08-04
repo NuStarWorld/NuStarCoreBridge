@@ -27,7 +27,7 @@ import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
-import top.nustar.nustarcorebridge.api.PacketEventBus;
+import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
 
 @Subscriber

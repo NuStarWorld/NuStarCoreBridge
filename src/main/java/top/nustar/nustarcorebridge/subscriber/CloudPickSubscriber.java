@@ -26,12 +26,15 @@ import team.idealstate.sugar.next.context.annotation.component.Subscriber;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
-import top.nustar.nustarcorebridge.api.PacketEventBus;
+import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
 
 /**
- * @author : NuStar Date : 2025/7/23 01:25 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
- *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
+ * @author : NuStar
+ * Date : 2025/7/23 01:25
+ * Website : <a href="https://www.nustar.top">nustar's web</a>
+ * Github : <a href="https://github.com/nustarworld">nustar's github</a>
+ * QQ : 3318029085
  */
 @Subscriber
 @DependsOn(

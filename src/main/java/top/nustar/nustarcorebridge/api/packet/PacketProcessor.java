@@ -16,13 +16,19 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.sender;
+package top.nustar.nustarcorebridge.api.packet;
 
-@SuppressWarnings("unused")
-public interface PacketSender<T> {
-    T getSender();
+import java.lang.reflect.Method;
+import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
+import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
 
-    void sendMessage(String message);
+public interface PacketProcessor {
+    default String getPacketName(PacketProcessor packetProcessor) {
+        PacketName packetName = packetProcessor.getClass().getAnnotation(PacketName.class);
+        return packetName.value();
+    }
 
-    boolean isOp();
+    default String getHandlerName(Method method) {
+        return method.getAnnotation(PacketHandler.class).value();
+    }
 }

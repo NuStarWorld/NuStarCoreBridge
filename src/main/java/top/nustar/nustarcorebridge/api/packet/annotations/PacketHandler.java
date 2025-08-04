@@ -16,7 +16,7 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.annotations;
+package top.nustar.nustarcorebridge.api.packet.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
