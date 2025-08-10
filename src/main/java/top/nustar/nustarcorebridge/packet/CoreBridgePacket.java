@@ -57,7 +57,7 @@ public class CoreBridgePacket implements PacketProcessor {
                             converter = BukkitOfflinePlayerConverter.class)
                     OfflinePlayer offlinePlayer,
             @PacketArgument(value = "placeholder", description = "Papi 变量") String papiPlaceholder) {
-        String parsePapi = PlaceholderAPI.setPlaceholders(offlinePlayer, papiPlaceholder);
+        String parsePapi = PlaceholderAPI.setPlaceholders(offlinePlayer, "%" + papiPlaceholder.replace("#", "_") + "%");
         String placeholder = String.format(
                 "NuStarCoreBridge_PapiPlaceholder_%s_%s",
                 offlinePlayer.getUniqueId().toString(), papiPlaceholder);
