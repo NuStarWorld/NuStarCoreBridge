@@ -18,7 +18,6 @@
 
 package top.nustar.nustarcorebridge.subscriber;
 
-import eos.moe.dragoncore.api.gui.event.CustomPacketEvent;
 import java.util.Map;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,6 +27,7 @@ import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
+import yslelf.cloudpick.bukkit.api.event.CustomPacketEvent;
 
 /**
  * @author : NuStar
