@@ -21,6 +21,7 @@ package top.nustar.nustarcorebridge.packet;
 import me.clip.placeholderapi.PlaceholderAPI;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
@@ -31,6 +32,7 @@ import top.nustar.nustarcorebridge.api.packet.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
 import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
+import top.nustar.nustarcorebridge.configuration.NuStarCoreBridgeConfiguration;
 import top.nustar.nustarcorebridge.converter.BukkitOfflinePlayerConverter;
 
 /**
@@ -47,6 +49,7 @@ import top.nustar.nustarcorebridge.converter.BukkitOfflinePlayerConverter;
 public class CoreBridgePacket implements PacketProcessor {
 
     private volatile PlaceholderService placeholderService;
+    private volatile NuStarCoreBridgeConfiguration configuration;
 
     @PacketHandler(value = "parsePapi", description = "为目标解析一个 Papi 变量")
     public void parsePapi(
@@ -57,7 +60,17 @@ public class CoreBridgePacket implements PacketProcessor {
                             converter = BukkitOfflinePlayerConverter.class)
                     OfflinePlayer offlinePlayer,
             @PacketArgument(value = "placeholder", description = "Papi 变量") String papiPlaceholder) {
-        String parsePapi = PlaceholderAPI.setPlaceholders(offlinePlayer, "%" + papiPlaceholder.replace("#", "_") + "%");
+        String papi = "%" + papiPlaceholder.replace("#", "_") + "%";
+        for (String blackPlaceholder : configuration.getBlackPlaceholderList()) {
+            if (papi.contains(blackPlaceholder)) {
+                Log.error(String.format("玩家 %s 尝试为 %s 解析一个黑名单变量 %s！",
+                        sender.getSender().getName(),
+                        offlinePlayer.getName(),
+                        papi));
+                return;
+            }
+        }
+        String parsePapi = PlaceholderAPI.setPlaceholders(offlinePlayer, papi);
         String placeholder = String.format(
                 "NuStarCoreBridge_PapiPlaceholder_%s_%s",
                 offlinePlayer.getUniqueId().toString(), papiPlaceholder);
@@ -67,5 +80,10 @@ public class CoreBridgePacket implements PacketProcessor {
     @Autowired
     public void setPlaceholderService(PlaceholderService placeholderService) {
         this.placeholderService = placeholderService;
+    }
+
+    @Autowired
+    public void setConfiguration(NuStarCoreBridgeConfiguration configuration) {
+        this.configuration = configuration;
     }
 }

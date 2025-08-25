@@ -1,0 +1,7 @@
+# papi变量黑名单,模式为包含模式
+# 也就是变量名带这串内容就屏蔽
+# 如果你想添加,这里三个也需要留着
+black-placeholder:
+  - "trmenu_js"
+  - "chemdah"
+  - "trchat_js"
