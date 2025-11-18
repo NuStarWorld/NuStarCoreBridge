@@ -50,6 +50,9 @@ repositories {
         name = "placeholder-api"
         url = uri("https://repo.extendedclip.com/content/repositories/placeholderapi/")
     }
+    maven {
+        url = uri("https://maven.nustar.top/repository/nustar-public/")
+    }
     mavenCentral()
 }
 

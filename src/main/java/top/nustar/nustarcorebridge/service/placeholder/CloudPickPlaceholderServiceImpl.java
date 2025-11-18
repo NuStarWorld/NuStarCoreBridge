@@ -41,22 +41,22 @@ import yslelf.cloudpick.bukkit.api.PacketSender;
 public class CloudPickPlaceholderServiceImpl implements PlaceholderService {
     @Override
     public void sendPlaceholder(Player player, String placeholder, String value) {
-        PacketSender.sendSyncPlaceholder(player, Collections.singletonMap(placeholder, value));
+        PacketSender.sendCustomData(player, placeholder, value);
     }
 
     @Override
     public void sendPlaceholderMap(Player player, Map<String, String> placeholderMap) {
-        PacketSender.sendSyncPlaceholder(player, placeholderMap);
+        for (Map.Entry<String, String> placeholderEntry : placeholderMap.entrySet()) {
+            PacketSender.sendCustomData(player, placeholderEntry.getKey(), placeholderEntry.getValue());
+        }
     }
 
     @SafeVarargs
     @Override
     public final void sendPlaceholders(Player player, Pair<String, String>... pairs) {
-        Map<String, String> placeholderMap = new HashMap<>();
         for (Pair<String, String> pair : pairs) {
-            placeholderMap.put(pair.getFirst(), pair.getSecond());
+            PacketSender.sendCustomData(player, pair.getFirst(), pair.getSecond());
         }
-        PacketSender.sendSyncPlaceholder(player, placeholderMap);
     }
 
     @Override
