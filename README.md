@@ -3,29 +3,27 @@
 ### 插件优势
 1. 跨平台发包
 2. 跨平台服务调用
-3. 人类友好的API，错误提示
+3. 人类友好的API和准确的错误提示
 
 ### 常规用法
 请查阅`NuStarCoreBridgeAPI`类下的接口方法
 
 ### 自定义发包处理器
-一段简单的示例代码，更多内容请查阅`DefaultPacketProcessor`类下的示例代码
+一段简单的示例代码，更多内容请查阅`top.nustar.nustarcorebridge.packet.DefaultPacketProcessor`类下的示例代码
 ```java
 @PacketName("DefaultPacket")
 public class DefaultPacketProcessor implements PacketProcessor {
 
     /**
-     * @param packetSender 发送者 这里指代Bukkit的玩家
-     * @param name 参数名
-     * @param message 参数名
+     * 向执行发包的玩家发送一条消息
+     * @param packetContext 发包上下文
+     * @param message 要发送的消息
      */
-    @PacketHandler(value = "sendMessage", description = "向后台发送一条测试消息")
+    @PacketHandler(value = "sendMessage", description = "向发包执行者发送一条消息")
     public void sendMessage(
-            PacketSender<Player> packetSender,
-            @PacketArgument(value = "name", description = "测试名字") String name,
-            @PacketArgument(value = "message", description = "测试消息") String message
-    ) {
-        System.out.printf("DefaultPacketProcessor.runPacket(%s,%s, %s)\n", packetSender, name, message);
+            PacketContext<Player> packetContext,
+            @PacketArgument(value = "message", description = "要发送的消息") String message) {
+        packetContext.getPacketSender().sendMessage(message);
     }
 
 }
@@ -36,11 +34,12 @@ public class Plugin extends JavaPlugin {
     @Override
     public void onEnable() {
         NuStarCoreBridgeAPI.addPacketProcessors(DefaultPacketProcessor.class);
-        // 支持链式调用
+        // 支持链式调用和数组
         NuStarCoreBridgeAPI
                 .addPacketProcessors(Packet1.class)
                 .addPacketProcessors(Packet2.class)
                 .addPacketProcessors(Packet3.class);
+        NuStarCoreBridgeAPI.addPacketProcessors(Packet1.class, Packet2.class, Packet3.class);
     }
 }
 ```
@@ -64,8 +63,8 @@ public class Plugin extends JavaPlugin {
 public class DefaultPacketProcessor implements PacketProcessor {
     
     @PacketHandler(value = "loadItem", description = "向客户端发送一个假物品")
-    public void loadItem(PacketSender<Player> packetSender) {
-        Player sender = packetSender.getSender();
+    public void loadItem(PacketContext<Player> packetContext) {
+        Player sender = packetContext.getPacketSender.getSender();
         NuStarCoreBridgeAPI.putSlotItem(sender, "测试槽位", new ItemStack(Material.STONE, 1));
     }
 }
