@@ -23,7 +23,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
-import top.nustar.nustarcorebridge.api.packet.converter.SimpleArgumentConverter;
+import top.nustar.nustarcorebridge.api.packet.simple.SimpleArgumentConverter;
 
 @Target(ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

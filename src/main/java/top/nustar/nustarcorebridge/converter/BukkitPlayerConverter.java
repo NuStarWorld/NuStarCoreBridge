@@ -18,11 +18,12 @@
 
 package top.nustar.nustarcorebridge.converter;
 
-import java.util.Optional;
-import java.util.UUID;
 import org.bukkit.Bukkit;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author : NuStar
@@ -34,7 +35,7 @@ import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
 @SuppressWarnings("unused")
 public class BukkitPlayerConverter implements ArgumentConverter {
     @Override
-    public Optional<Object> convert(PacketContext context, String value) {
+    public Optional<Object> convert(PacketContext<?> context, String value) {
         UUID uuid;
         try {
             uuid = UUID.fromString(value);

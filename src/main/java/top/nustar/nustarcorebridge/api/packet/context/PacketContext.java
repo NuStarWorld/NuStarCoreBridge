@@ -18,9 +18,12 @@
 
 package top.nustar.nustarcorebridge.api.packet.context;
 
-import java.util.List;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
+import top.nustar.nustarcorebridge.api.packet.simple.SimplePacketContext;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author : NuStar
@@ -30,15 +33,38 @@ import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
  * QQ : 3318029085
  */
 @SuppressWarnings("unused")
-public interface PacketContext {
-    @NotNull
-    PacketSender<?> getPacketSender();
+public interface PacketContext<P> {
 
+    /**
+     * 包的发送者
+     * @return 发送者
+     */
+    @NotNull
+    PacketSender<P> getPacketSender();
+
+    /**
+     * 未处理的参数列表
+     * @return 参数列表
+     */
     @NotNull
     List<String> getArguments();
 
+    /**
+     * 经过插件协议处理后的参数表
+     * @return 参数表
+     */
     @NotNull
-    static PacketContext of(@NotNull PacketSender<?> sender, @NotNull List<String> argument) {
-        return new SimplePacketContext(sender, argument);
+    Map<String, Object> getArgMap();
+
+    /**
+     * 经过插件协议处理后的原始参数表
+     * @return 原始参数表
+     */
+    @NotNull
+    Map<String, Object> getUnSafeArgMap();
+
+    @NotNull
+    static PacketContext<?> of(PacketSender<?> sender, @NotNull List<String> argument, @NotNull Map<String, Object> argMap) {
+        return new SimplePacketContext<>(sender, argument, argMap);
     }
 }

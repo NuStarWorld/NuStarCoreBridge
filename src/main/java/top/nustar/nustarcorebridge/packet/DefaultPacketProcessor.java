@@ -16,7 +16,7 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.example;
+package top.nustar.nustarcorebridge.packet;
 
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Component;
@@ -26,7 +26,7 @@ import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
-import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.converter.BukkitPlayerConverter;
 
 @Component
@@ -37,14 +37,14 @@ public class DefaultPacketProcessor implements PacketProcessor {
 
     /**
      * 向执行发包的玩家发送一条消息
-     * @param packetSender 执行发包的玩家
+     * @param packetContext 发包上下文
      * @param message 要发送的消息
      */
     @PacketHandler(value = "sendMessage", description = "向发包执行者发送一条消息")
     public void sendMessage(
-            PacketSender<Player> packetSender,
+            PacketContext<Player> packetContext,
             @PacketArgument(value = "message", description = "要发送的消息") String message) {
-        packetSender.getSender().sendMessage(message);
+        packetContext.getPacketSender().sendMessage(message);
     }
 
     /**

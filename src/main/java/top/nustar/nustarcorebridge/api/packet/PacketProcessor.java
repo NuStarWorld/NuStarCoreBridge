@@ -18,13 +18,14 @@
 
 package top.nustar.nustarcorebridge.api.packet;
 
-import java.lang.reflect.Method;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
 
+import java.lang.reflect.Method;
+
 public interface PacketProcessor {
-    default String getPacketName(PacketProcessor packetProcessor) {
-        PacketName packetName = packetProcessor.getClass().getAnnotation(PacketName.class);
+    default String getPacketName() {
+        PacketName packetName = this.getClass().getAnnotation(PacketName.class);
         return packetName.value();
     }
 

@@ -14,11 +14,8 @@ import top.nustar.nustarcorebridge.utils.Pair;
 import java.util.Map;
 
 /**
- * @author : NuStar
- * Date : 2025/8/4 20:25
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author NuStar
+ * @since  2025/8/4 20:25
  */
 @Component
 @Scope(Scope.SINGLETON)

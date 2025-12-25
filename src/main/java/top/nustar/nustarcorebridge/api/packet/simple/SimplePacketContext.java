@@ -16,21 +16,42 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.api.packet.converter;
+package top.nustar.nustarcorebridge.api.packet.simple;
 
-import java.util.Optional;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
+import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author : NuStar
- * Date : 2025/7/23 23:26
+ * Date : 2025/7/23 23:00
  * Website : <a href="https://www.nustar.top">nustar's web</a>
  * Github : <a href="https://github.com/nustarworld">nustar's github</a>
  * QQ : 3318029085
  */
-public class SimpleArgumentConverter implements ArgumentConverter {
+@RequiredArgsConstructor
+@Getter
+public class SimplePacketContext<P> implements PacketContext<P> {
+    private final PacketSender<P> packetSender;
+    @NotNull
+    private final List<String> arguments;
+    @NotNull
+    private final Map<String, Object> argMap;
+
     @Override
-    public Optional<Object> convert(PacketContext context, String value) {
-        return Optional.of(value);
+    public Map<String, Object> getArgMap() {
+        return new ConcurrentHashMap<>(argMap);
+    }
+
+    @Override
+    public Map<String, Object> getUnSafeArgMap() {
+        return argMap;
     }
 }
+

@@ -27,11 +27,11 @@ import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
-import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
-import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
+import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.configuration.NuStarCoreBridgeConfiguration;
 import top.nustar.nustarcorebridge.converter.BukkitOfflinePlayerConverter;
 
@@ -53,7 +53,7 @@ public class CoreBridgePacket implements PacketProcessor {
 
     @PacketHandler(value = "parsePapi", description = "为目标解析一个 Papi 变量")
     public void parsePapi(
-            PacketSender<Player> sender,
+            PacketContext<Player> packetContext,
             @PacketArgument(
                             value = "playerUid",
                             description = "玩家 UUID",
@@ -64,7 +64,7 @@ public class CoreBridgePacket implements PacketProcessor {
         for (String blackPlaceholder : configuration.getBlackPlaceholderList()) {
             if (papi.contains(blackPlaceholder)) {
                 Log.error(String.format("玩家 %s 尝试为 %s 解析一个黑名单变量 %s！",
-                        sender.getSender().getName(),
+                        packetContext.getPacketSender().getName(),
                         offlinePlayer.getName(),
                         papi));
                 return;
@@ -74,7 +74,7 @@ public class CoreBridgePacket implements PacketProcessor {
         String placeholder = String.format(
                 "NuStarCoreBridge_PapiPlaceholder_%s_%s",
                 offlinePlayer.getUniqueId().toString(), papiPlaceholder);
-        placeholderService.sendPlaceholder(sender.getSender(), placeholder, parsePapi);
+        placeholderService.sendPlaceholder(packetContext.getPacketSender().getSender(), placeholder, parsePapi);
     }
 
     @Autowired

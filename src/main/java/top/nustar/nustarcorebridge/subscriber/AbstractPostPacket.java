@@ -18,7 +18,6 @@
 
 package top.nustar.nustarcorebridge.subscriber;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,12 +28,11 @@ import java.util.Map;
  */
 public abstract class AbstractPostPacket {
 
-    public Map<String, String> getArgs(List<String> dataList) {
-        Map<String, String> argsMap = new HashMap<>();
-        List<String> dataClone = new ArrayList<>(dataList);
-        dataClone.remove(0);
-        if (!dataClone.isEmpty()) {
-            for (String arg : dataClone) {
+    protected Map<String, Object> getArgs(List<String> dataList) {
+        Map<String, Object> argsMap = new HashMap<>();
+        dataList.remove(0);
+        if (!dataList.isEmpty()) {
+            for (String arg : dataList) {
                 String[] split = arg.split("=", -1);
                 if (split.length != 2) continue;
                 argsMap.put(split[0], split[1]);

@@ -18,9 +18,10 @@
 
 package top.nustar.nustarcorebridge.api.packet.converter;
 
-import java.util.Optional;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
+
+import java.util.Optional;
 
 /**
  * @author : NuStar
@@ -31,5 +32,5 @@ import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
  */
 public interface ArgumentConverter {
     @NotNull
-    Optional<Object> convert(@NotNull PacketContext context, @NotNull String value);
+    Optional<Object> convert(@NotNull PacketContext<?> context, @NotNull String value);
 }

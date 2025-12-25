@@ -18,10 +18,11 @@
 
 package top.nustar.nustarcorebridge.converter;
 
-import java.util.Optional;
-import java.util.UUID;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
+
+import java.util.Optional;
+import java.util.UUID;
 
 /**
  * @author : NuStar
@@ -33,7 +34,7 @@ import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
 @SuppressWarnings("unused")
 public class UidConverter implements ArgumentConverter {
     @Override
-    public Optional<Object> convert(PacketContext context, String value) {
+    public Optional<Object> convert(PacketContext<?> context, String value) {
         try {
             return Optional.of(UUID.fromString(value));
         } catch (IllegalArgumentException e) {

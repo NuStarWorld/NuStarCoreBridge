@@ -19,7 +19,6 @@
 package top.nustar.nustarcorebridge.subscriber;
 
 import eos.moe.dragoncore.api.gui.event.CustomPacketEvent;
-import java.util.Map;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
@@ -27,7 +26,12 @@ import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Subscriber
 @DependsOn(
@@ -40,9 +44,10 @@ public class DragonCoreSubscriber extends AbstractPostPacket implements Listener
     @EventHandler
     public void onPacket(CustomPacketEvent event) {
         if (event.isCancelled()) return;
-        String handleName = event.getData().get(0);
-        Map<String, String> argsMap = getArgs(event.getData());
-        packetEventBus.post(new BukkitSender(event.getPlayer()), event.getIdentifier(), handleName, argsMap);
+        List<String> argList = new ArrayList<>(event.getData());
+        String handleName = argList.get(0);
+        Map<String, Object> argsMap = getArgs(argList);
+        packetEventBus.post(PacketContext.of(new BukkitSender(event.getPlayer()), argList, argsMap), event.getIdentifier(), handleName, argsMap);
     }
 
     @Autowired

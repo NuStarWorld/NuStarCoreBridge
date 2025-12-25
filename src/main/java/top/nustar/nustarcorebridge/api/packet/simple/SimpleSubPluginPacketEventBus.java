@@ -16,10 +16,8 @@
  *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package top.nustar.nustarcorebridge.post;
+package top.nustar.nustarcorebridge.api.packet.simple;
 
-import java.util.List;
-import java.util.Map;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
@@ -29,7 +27,10 @@ import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
 import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
-import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author : NuStar
@@ -55,8 +56,8 @@ public class SimpleSubPluginPacketEventBus implements PacketEventBus {
     }
 
     @Override
-    public void post(PacketSender<?> packetSender, String packetName, String handleName, Map<String, String> argsMap) {
-        getDelegate().post(packetSender, packetName, handleName, argsMap);
+    public void post(@NotNull PacketContext<?> packetContext, @NotNull String packetName, @NotNull String handleName, @NotNull Map<String, Object> argsMap) {
+        getDelegate().post(packetContext, packetName, handleName, argsMap);
     }
 
     @Override
