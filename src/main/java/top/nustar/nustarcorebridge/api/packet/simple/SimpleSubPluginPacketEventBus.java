@@ -55,6 +55,12 @@ public class SimpleSubPluginPacketEventBus implements PacketEventBus {
         getDelegate().addPacketProcessors(packetProcessors);
     }
 
+    @SafeVarargs
+    @Override
+    public final void addPacketProcessors(Class<? extends PacketProcessor>... packetProcessors) {
+        getDelegate().addPacketProcessors(packetProcessors);
+    }
+
     @Override
     public void post(@NotNull PacketContext<?> packetContext, @NotNull String packetName, @NotNull String handleName, @NotNull Map<String, Object> argsMap) {
         getDelegate().post(packetContext, packetName, handleName, argsMap);

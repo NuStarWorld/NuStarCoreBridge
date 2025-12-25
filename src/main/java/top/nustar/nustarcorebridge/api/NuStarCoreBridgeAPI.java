@@ -29,6 +29,11 @@ public class NuStarCoreBridgeAPI {
         return packetEventBus.addPacketProcessors(packetProcessorClazz);
     }
 
+    @SafeVarargs
+    public static void addPacketProcessors(Class<? extends PacketProcessor>... packetProcessorClasses) {
+        packetEventBus.addPacketProcessors(packetProcessorClasses);
+    }
+
     public static void putSlotItem(Player player, String identifier, ItemStack item) {
         slotService.putSlotItem(player, identifier, item);
     }

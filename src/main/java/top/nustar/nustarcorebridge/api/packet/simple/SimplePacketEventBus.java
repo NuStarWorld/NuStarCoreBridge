@@ -72,6 +72,14 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
         }
     }
 
+    @SafeVarargs
+    @Override
+    public final void addPacketProcessors(Class<? extends PacketProcessor>... packetProcessors) {
+        for (Class<? extends PacketProcessor> packetProcessor : packetProcessors) {
+            addPacketProcessors(packetProcessor);
+        }
+    }
+
     @Override
     public void destroy() {
         instance = null;
