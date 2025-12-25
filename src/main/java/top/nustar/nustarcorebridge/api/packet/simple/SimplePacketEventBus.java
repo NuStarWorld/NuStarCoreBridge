@@ -18,6 +18,9 @@
 
 package top.nustar.nustarcorebridge.api.packet.simple;
 
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
@@ -34,10 +37,6 @@ import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.api.packet.registry.PacketProcessorRegistry;
 import top.nustar.nustarcorebridge.api.packet.registry.impl.DefaultPacketProcessorRegistry;
-
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Scope(Scope.SINGLETON)
@@ -56,7 +55,8 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
     @Override
     public PacketEventBus addPacketProcessors(@NotNull Class<? extends PacketProcessor> packetProcessorClazz) {
         try {
-            PacketProcessor packetProcessor = packetProcessorClazz.getDeclaredConstructor().newInstance();
+            PacketProcessor packetProcessor =
+                    packetProcessorClazz.getDeclaredConstructor().newInstance();
             String packetName = packetProcessor.getPacketName();
             this.packetProcessorRegistryMap.compute(packetName, (key, value) -> {
                 if (value != null) {
@@ -98,7 +98,11 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
     }
 
     @Override
-    public void post(@NotNull PacketContext<?> packetContext, @NotNull String packetName, @NotNull String handleName, @NotNull Map<String, Object> argsMap) {
+    public void post(
+            @NotNull PacketContext<?> packetContext,
+            @NotNull String packetName,
+            @NotNull String handleName,
+            @NotNull Map<String, Object> argsMap) {
         PacketProcessorRegistry packetProcessorRegistry = packetProcessorRegistryMap.get(packetName);
         if (packetProcessorRegistry == null) {
             return;

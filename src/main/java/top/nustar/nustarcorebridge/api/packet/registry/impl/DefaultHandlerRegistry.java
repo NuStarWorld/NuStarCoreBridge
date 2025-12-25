@@ -1,5 +1,27 @@
+/*
+ *    NuStarCoreBridge
+ *    Copyright (C) 2025  NuStar
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 package top.nustar.nustarcorebridge.api.packet.registry.impl;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.*;
+import java.util.stream.Collectors;
 import lombok.Getter;
 import team.idealstate.sugar.logging.Log;
 import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
@@ -10,23 +32,19 @@ import top.nustar.nustarcorebridge.api.packet.registry.HandlerRegistry;
 import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
 import top.nustar.nustarcorebridge.exception.PacketArgumentException;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.*;
-import java.util.stream.Collectors;
-
 /**
  * @author NuStar<br>
  * @since 2025/12/16 13:12<br>
  */
 public class DefaultHandlerRegistry implements HandlerRegistry {
     private static final Map<Class<? extends ArgumentConverter>, ArgumentConverter> converterCacheMap = new HashMap<>();
-    //private static final MethodHandles.Lookup PUBLIC_LOOKUP = MethodHandles.lookup();
+    // private static final MethodHandles.Lookup PUBLIC_LOOKUP = MethodHandles.lookup();
     @Getter
     private final String handlerName;
+
     private final String packetName;
     private final PacketProcessor processor;
-    //private final MethodHandle methodHandle;
+    // private final MethodHandle methodHandle;
     private final Method method;
     private final Parameter[] parameterArray;
     private final Map<PacketArgument, Parameter> parameters;
@@ -44,7 +62,9 @@ public class DefaultHandlerRegistry implements HandlerRegistry {
             if (PacketContext.class.isAssignableFrom(parameter.getType())) continue;
             PacketArgument argument = parameter.getAnnotation(PacketArgument.class);
             if (argument == null || "".equals(argument.value())) {
-                String errorMsg = String.format("发包处理器 %s 的方法 %s 参数 %s 缺少 @PacketArgument 注解或值为空！", packetName, method.getName(), parameter.getName());
+                String errorMsg = String.format(
+                        "发包处理器 %s 的方法 %s 参数 %s 缺少 @PacketArgument 注解或值为空！",
+                        packetName, method.getName(), parameter.getName());
                 Log.warn(errorMsg);
                 throw new PacketArgumentException(errorMsg);
             }
@@ -65,7 +85,8 @@ public class DefaultHandlerRegistry implements HandlerRegistry {
         List<String> missingParams = new ArrayList<>();
         for (Map.Entry<PacketArgument, Parameter> packetArgumentParameterEntry : parameters.entrySet()) {
             String paramName = packetArgumentParameterEntry.getKey().value();
-            Class<? extends ArgumentConverter> converter = packetArgumentParameterEntry.getKey().converter();
+            Class<? extends ArgumentConverter> converter =
+                    packetArgumentParameterEntry.getKey().converter();
             Object param = argMap.get(paramName);
             if (param == null) {
                 missingParams.add(paramName);
@@ -104,10 +125,7 @@ public class DefaultHandlerRegistry implements HandlerRegistry {
     }
 
     private Optional<Object> convert(
-            PacketContext<?> context,
-            Object value,
-            Class<? extends ArgumentConverter> converter
-    ) {
+            PacketContext<?> context, Object value, Class<? extends ArgumentConverter> converter) {
         ArgumentConverter argumentConverter = converterCacheMap.computeIfAbsent(converter, k -> {
             try {
                 return k.newInstance();

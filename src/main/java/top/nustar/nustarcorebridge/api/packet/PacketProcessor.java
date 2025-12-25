@@ -18,10 +18,9 @@
 
 package top.nustar.nustarcorebridge.api.packet;
 
+import java.lang.reflect.Method;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketName;
-
-import java.lang.reflect.Method;
 
 public interface PacketProcessor {
     default String getPacketName() {

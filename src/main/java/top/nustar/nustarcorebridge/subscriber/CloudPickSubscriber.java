@@ -18,6 +18,9 @@
 
 package top.nustar.nustarcorebridge.subscriber;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
@@ -29,16 +32,9 @@ import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
 import yslelf.cloudpick.bukkit.api.event.CustomPacketEvent;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
 /**
- * @author : NuStar
- * Date : 2025/7/23 01:25
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author : NuStar Date : 2025/7/23 01:25 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
+ *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 @Subscriber
 @DependsOn(
@@ -54,7 +50,11 @@ public class CloudPickSubscriber extends AbstractPostPacket implements Listener 
         List<String> argList = new ArrayList<>(event.getData());
         String handleName = argList.get(0);
         Map<String, Object> argsMap = getArgs(argList);
-        packetEventBus.post(PacketContext.of(new BukkitSender(event.getPlayer()), argList, argsMap), event.getIdentifier(), handleName, argsMap);
+        packetEventBus.post(
+                PacketContext.of(new BukkitSender(event.getPlayer()), argList, argsMap),
+                event.getIdentifier(),
+                handleName,
+                argsMap);
     }
 
     @Autowired

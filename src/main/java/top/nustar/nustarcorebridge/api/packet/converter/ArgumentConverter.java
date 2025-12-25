@@ -18,17 +18,13 @@
 
 package top.nustar.nustarcorebridge.api.packet.converter;
 
+import java.util.Optional;
 import team.idealstate.sugar.validate.annotation.NotNull;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 
-import java.util.Optional;
-
 /**
- * @author : NuStar
- * Date : 2025/7/23 22:54
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author : NuStar Date : 2025/7/23 22:54 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
+ *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 public interface ArgumentConverter {
     @NotNull

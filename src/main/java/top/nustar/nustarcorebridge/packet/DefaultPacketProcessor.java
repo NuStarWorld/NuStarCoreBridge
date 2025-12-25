@@ -37,6 +37,7 @@ public class DefaultPacketProcessor implements PacketProcessor {
 
     /**
      * 向执行发包的玩家发送一条消息
+     *
      * @param packetContext 发包上下文
      * @param message 要发送的消息
      */
@@ -49,20 +50,19 @@ public class DefaultPacketProcessor implements PacketProcessor {
 
     /**
      * 向指定玩家发送一条消息
+     *
      * @param target 目标玩家
      * @param message 要发送的消息
      */
     @PacketHandler(value = "sendPlayerMessage", description = "向指定玩家发送一条消息")
     public void sendPlayerMessage(
-            @PacketArgument(value = "target", description = "目标玩家", converter = BukkitPlayerConverter.class) Player target,
-            @PacketArgument(value = "message", description = "要发送的消息") String message
-    ) {
+            @PacketArgument(value = "target", description = "目标玩家", converter = BukkitPlayerConverter.class)
+                    Player target,
+            @PacketArgument(value = "message", description = "要发送的消息") String message) {
         target.sendMessage(message);
     }
 
-    /**
-     * 向控制台发送一条消息
-     */
+    /** 向控制台发送一条消息 */
     @PacketHandler(value = "sendConsoleMessage", description = "向控制台输出一条消息")
     public void sendConsoleMessage() {
         System.out.println("ConsoleMessage");

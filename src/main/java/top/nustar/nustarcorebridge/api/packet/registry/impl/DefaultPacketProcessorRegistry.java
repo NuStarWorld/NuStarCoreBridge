@@ -1,12 +1,22 @@
-package top.nustar.nustarcorebridge.api.packet.registry.impl;
+/*
+ *    NuStarCoreBridge
+ *    Copyright (C) 2025  NuStar
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
-import lombok.Getter;
-import team.idealstate.sugar.logging.Log;
-import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
-import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
-import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
-import top.nustar.nustarcorebridge.api.packet.registry.HandlerRegistry;
-import top.nustar.nustarcorebridge.api.packet.registry.PacketProcessorRegistry;
+package top.nustar.nustarcorebridge.api.packet.registry.impl;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -14,6 +24,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import lombok.Getter;
+import team.idealstate.sugar.logging.Log;
+import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
+import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
+import top.nustar.nustarcorebridge.api.packet.registry.HandlerRegistry;
+import top.nustar.nustarcorebridge.api.packet.registry.PacketProcessorRegistry;
 
 /**
  * @author NuStar<br>
@@ -23,6 +40,7 @@ public class DefaultPacketProcessorRegistry implements PacketProcessorRegistry {
 
     @Getter
     private final String packetName;
+
     private final Map<String, HandlerRegistry> handlerRegistryMap = new ConcurrentHashMap<>();
 
     public DefaultPacketProcessorRegistry(PacketProcessor processor) {
@@ -40,8 +58,8 @@ public class DefaultPacketProcessorRegistry implements PacketProcessorRegistry {
 
             Log.info("               ┝── " + handlerName + " "
                     + defaultHandlerRegistry.getParameters().keySet().stream()
-                    .map(packetArgument -> packetArgument.value() + ":" + packetArgument.description())
-                    .collect(Collectors.toList())
+                            .map(packetArgument -> packetArgument.value() + ":" + packetArgument.description())
+                            .collect(Collectors.toList())
                     + " - " + handlerMethodAnnotation.description());
         }
         Log.info("               ┕── 加载 " + handlerMethods.size() + " 个方法");

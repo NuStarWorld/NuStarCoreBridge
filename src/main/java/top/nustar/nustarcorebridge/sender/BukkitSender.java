@@ -18,10 +18,9 @@
 
 package top.nustar.nustarcorebridge.sender;
 
+import java.util.UUID;
 import org.bukkit.entity.Player;
 import top.nustar.nustarcorebridge.api.packet.sender.AbstractSender;
-
-import java.util.UUID;
 
 public class BukkitSender extends AbstractSender<Player> {
     public BukkitSender(Player sender) {

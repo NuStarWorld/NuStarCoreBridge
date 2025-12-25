@@ -18,9 +18,8 @@
 
 package top.nustar.nustarcorebridge.api.packet.sender;
 
-import team.idealstate.sugar.validate.annotation.NotNull;
-
 import java.util.UUID;
+import team.idealstate.sugar.validate.annotation.NotNull;
 
 @SuppressWarnings("unused")
 public interface PacketSender<T> {
@@ -29,6 +28,7 @@ public interface PacketSender<T> {
 
     /**
      * 获得发送者 UUID
+     *
      * @return UUID
      */
     @NotNull
@@ -36,6 +36,7 @@ public interface PacketSender<T> {
 
     /**
      * 获得发送者的名称
+     *
      * @return 名称
      */
     @NotNull
@@ -43,12 +44,14 @@ public interface PacketSender<T> {
 
     /**
      * 向发送者发送一条消息
+     *
      * @param message 发送的消息
      */
     void sendMessage(String message);
 
     /**
      * 是否为管理员
+     *
      * @return 是否
      */
     boolean isOp();

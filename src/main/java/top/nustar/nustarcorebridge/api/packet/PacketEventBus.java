@@ -18,18 +18,19 @@
 
 package top.nustar.nustarcorebridge.api.packet;
 
-import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
-
 import java.util.Map;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 
 public interface PacketEventBus {
 
     /**
      * 添加发包处理器
+     *
      * @param packetProcessors 发包处理器列表
      */
     @SuppressWarnings("unchecked")
     void addPacketProcessors(Class<? extends PacketProcessor>... packetProcessors);
+
     PacketEventBus addPacketProcessors(Class<? extends PacketProcessor> packetProcessors);
 
     void post(PacketContext<?> packetContext, String packetName, String handleName, Map<String, Object> argsMap);

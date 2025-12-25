@@ -18,17 +18,13 @@
 
 package top.nustar.nustarcorebridge.api.packet.simple;
 
+import java.util.Optional;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
 
-import java.util.Optional;
-
 /**
- * @author : NuStar
- * Date : 2025/7/23 23:26
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author : NuStar Date : 2025/7/23 23:26 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
+ *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 public class SimpleArgumentConverter implements ArgumentConverter {
     @Override

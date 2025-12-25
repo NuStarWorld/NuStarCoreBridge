@@ -33,11 +33,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author : NuStar
- * Date : 2025/6/12 22:01
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author : NuStar Date : 2025/6/12 22:01 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
+ *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 @Component
 @Scope(Scope.SINGLETON)
@@ -62,7 +59,11 @@ public class SimpleSubPluginPacketEventBus implements PacketEventBus {
     }
 
     @Override
-    public void post(@NotNull PacketContext<?> packetContext, @NotNull String packetName, @NotNull String handleName, @NotNull Map<String, Object> argsMap) {
+    public void post(
+            @NotNull PacketContext<?> packetContext,
+            @NotNull String packetName,
+            @NotNull String handleName,
+            @NotNull Map<String, Object> argsMap) {
         getDelegate().post(packetContext, packetName, handleName, argsMap);
     }
 

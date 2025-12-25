@@ -19,6 +19,9 @@
 package top.nustar.nustarcorebridge.subscriber;
 
 import com.germ.germplugin.api.event.GermReceiveDosEvent;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import team.idealstate.sugar.next.context.annotation.component.Subscriber;
@@ -28,10 +31,6 @@ import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.sender.BukkitSender;
-
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 @Subscriber
 @DependsOn(
@@ -48,7 +47,11 @@ public class GermPluginSubscriber extends AbstractPostPacket implements Listener
         String handleName = args[0];
         List<String> argList = Arrays.asList(args);
         Map<String, Object> argsMap = getArgs(argList);
-        packetEventBus.post(PacketContext.of(new BukkitSender(event.getPlayer()), argList, argsMap), event.getDosId(), handleName, argsMap);
+        packetEventBus.post(
+                PacketContext.of(new BukkitSender(event.getPlayer()), argList, argsMap),
+                event.getDosId(),
+                handleName,
+                argsMap);
     }
 
     @Autowired

@@ -36,11 +36,8 @@ import top.nustar.nustarcorebridge.configuration.NuStarCoreBridgeConfiguration;
 import top.nustar.nustarcorebridge.converter.BukkitOfflinePlayerConverter;
 
 /**
- * @author : NuStar
- * Date : 2025/7/25 21:58
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author : NuStar Date : 2025/7/25 21:58 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
+ *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 @Component
 @PacketName("NuStarCoreBridge")
@@ -63,10 +60,9 @@ public class CoreBridgePacket implements PacketProcessor {
         String papi = "%" + papiPlaceholder.replace("#", "_") + "%";
         for (String blackPlaceholder : configuration.getBlackPlaceholderList()) {
             if (papi.contains(blackPlaceholder)) {
-                Log.error(String.format("玩家 %s 尝试为 %s 解析一个黑名单变量 %s！",
-                        packetContext.getPacketSender().getName(),
-                        offlinePlayer.getName(),
-                        papi));
+                Log.error(String.format(
+                        "玩家 %s 尝试为 %s 解析一个黑名单变量 %s！",
+                        packetContext.getPacketSender().getName(), offlinePlayer.getName(), papi));
                 return;
             }
         }

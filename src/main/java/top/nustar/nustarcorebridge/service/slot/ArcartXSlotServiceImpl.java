@@ -27,11 +27,8 @@ import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.service.SlotService;
 
 /**
- * @author : NuStar
- * Date : 2025/7/23 21:55
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author : NuStar Date : 2025/7/23 21:55 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
+ *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 @Service
 @DependsOn(classes = "priv.seventeen.artist.arcartx.ArcartX")

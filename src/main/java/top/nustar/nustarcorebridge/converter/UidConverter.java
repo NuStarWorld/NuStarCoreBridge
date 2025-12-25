@@ -18,18 +18,14 @@
 
 package top.nustar.nustarcorebridge.converter;
 
+import java.util.Optional;
+import java.util.UUID;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
 
-import java.util.Optional;
-import java.util.UUID;
-
 /**
- * @author : NuStar
- * Date : 2025/7/24 00:46
- * Website : <a href="https://www.nustar.top">nustar's web</a>
- * Github : <a href="https://github.com/nustarworld">nustar's github</a>
- * QQ : 3318029085
+ * @author : NuStar Date : 2025/7/24 00:46 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
+ *     href="https://github.com/nustarworld">nustar's github</a> QQ : 3318029085
  */
 @SuppressWarnings("unused")
 public class UidConverter implements ArgumentConverter {
