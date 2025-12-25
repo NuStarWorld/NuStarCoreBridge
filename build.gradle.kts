@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "top.nustar.nustarcorebridge"
-version = "1.0.0-SNAPSHOT"
+version = "2.0.0-SNAPSHOT"
 
 java {
     toolchain {
@@ -67,6 +67,8 @@ dependencies {
     @Suppress("VulnerableLibrariesLocal", "RedundantSuppression")
     testImplementation(libs.spigot.api)
     testImplementation(libs.minecraft.next.spigot)
+    testCompileOnly(libs.sugar)
+    annotationProcessor(libs.sugar)
 
     compileOnly(libs.lombok)
     annotationProcessor(libs.lombok)
