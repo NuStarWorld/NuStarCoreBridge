@@ -24,15 +24,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import team.idealstate.sugar.next.context.annotation.component.Service;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
+import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 import top.nustar.nustarcorebridge.api.service.SlotService;
 
 @Service
 @DependsOn(classes = "com.germ.germplugin.GermPlugin")
 @SuppressWarnings("unused")
 public class GermPluginSlotServiceImpl implements SlotService {
+
+    private volatile PacketExecutorService packetExecutorService;
+
     @Override
     public void putSlotItem(Player player, String identifier, ItemStack item) {
-        GermPacketAPI.sendSlotItemStack(player, identifier, item);
+        packetExecutorService.submitAsyncTask(() -> GermPacketAPI.sendSlotItemStack(player, identifier, item));
+
     }
 
     @Override

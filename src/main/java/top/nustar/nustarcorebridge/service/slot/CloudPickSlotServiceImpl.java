@@ -21,7 +21,9 @@ package top.nustar.nustarcorebridge.service.slot;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import team.idealstate.sugar.next.context.annotation.component.Service;
+import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
+import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 import top.nustar.nustarcorebridge.api.service.SlotService;
 import yslelf.cloudpick.bukkit.api.PacketSender;
 import yslelf.cloudpick.bukkit.api.SlotAPI;
@@ -34,13 +36,21 @@ import yslelf.cloudpick.bukkit.api.SlotAPI;
 @DependsOn(classes = "yslelf.cloudpick.bukkit.CloudPick")
 @SuppressWarnings("unused")
 public class CloudPickSlotServiceImpl implements SlotService {
+
+    private volatile PacketExecutorService packetExecutorService;
+
     @Override
     public void putSlotItem(Player player, String identifier, ItemStack item) {
-        PacketSender.putClientSlotItem(player, identifier, item);
+        packetExecutorService.submitAsyncTask(() -> PacketSender.putClientSlotItem(player, identifier, item));
     }
 
     @Override
     public ItemStack getItemFromIdentifier(Player player, String identifier) {
         return SlotAPI.getCacheSlotItem(player, identifier);
+    }
+
+    @Autowired
+    public void setPacketExecutorService(PacketExecutorService packetExecutorService) {
+        this.packetExecutorService = packetExecutorService;
     }
 }

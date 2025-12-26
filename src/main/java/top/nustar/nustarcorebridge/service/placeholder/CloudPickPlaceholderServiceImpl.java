@@ -18,13 +18,16 @@
 
 package top.nustar.nustarcorebridge.service.placeholder;
 
-import java.util.Map;
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Service;
+import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
+import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.utils.Pair;
 import yslelf.cloudpick.bukkit.api.PacketSender;
+
+import java.util.Map;
 
 /**
  * @author : NuStar Date : 2025/7/23 01:29 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
@@ -34,35 +37,48 @@ import yslelf.cloudpick.bukkit.api.PacketSender;
 @DependsOn(classes = "yslelf.cloudpick.bukkit.CloudPick")
 @SuppressWarnings("unused")
 public class CloudPickPlaceholderServiceImpl implements PlaceholderService {
+    private volatile PacketExecutorService packetExecutorService;
+
     @Override
     public void sendPlaceholder(Player player, String placeholder, String value) {
-        PacketSender.sendCustomData(player, placeholder, value);
+        packetExecutorService.submitAsyncTask(() -> PacketSender.sendCustomData(player, placeholder, value));
     }
 
     @Override
     public void sendPlaceholderMap(Player player, Map<String, String> placeholderMap) {
-        for (Map.Entry<String, String> placeholderEntry : placeholderMap.entrySet()) {
-            PacketSender.sendCustomData(player, placeholderEntry.getKey(), placeholderEntry.getValue());
-        }
+        packetExecutorService.submitAsyncTask(() -> {
+            for (Map.Entry<String, String> placeholderEntry : placeholderMap.entrySet()) {
+                PacketSender.sendCustomData(player, placeholderEntry.getKey(), placeholderEntry.getValue());
+            }
+        });
     }
 
     @SafeVarargs
     @Override
     public final void sendPlaceholders(Player player, Pair<String, String>... pairs) {
-        for (Pair<String, String> pair : pairs) {
-            PacketSender.sendCustomData(player, pair.getFirst(), pair.getSecond());
-        }
+        packetExecutorService.submitAsyncTask(() -> {
+            for (Pair<String, String> pair : pairs) {
+                PacketSender.sendCustomData(player, pair.getFirst(), pair.getSecond());
+            }
+        });
     }
 
     @Override
     public void removePlaceholder(Player player, String placeholder, boolean startsWith) {
-        PacketSender.sendDeletePlaceholderCache(player, placeholder, startsWith);
+        packetExecutorService.submitAsyncTask(() -> PacketSender.sendDeletePlaceholderCache(player, placeholder, startsWith));
     }
 
     @Override
     public void removePlaceholders(Player player, String... placeholder) {
-        for (String s : placeholder) {
-            PacketSender.sendDeletePlaceholderCache(player, s, false);
-        }
+        packetExecutorService.submitAsyncTask(() -> {
+            for (String s : placeholder) {
+                PacketSender.sendDeletePlaceholderCache(player, s, false);
+            }
+        });
+    }
+
+    @Autowired
+    public void setPacketExecutorService(PacketExecutorService packetExecutorService) {
+        this.packetExecutorService = packetExecutorService;
     }
 }

@@ -19,48 +19,65 @@
 package top.nustar.nustarcorebridge.service.placeholder;
 
 import com.germ.germplugin.api.GermPacketAPI;
-import java.util.Map;
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Service;
+import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
+import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.utils.Pair;
+
+import java.util.Map;
 
 @Service
 @DependsOn(classes = "com.germ.germplugin.GermPlugin")
 @SuppressWarnings("unused")
 public class GermPluginPlaceholderServiceImpl implements PlaceholderService {
+
+    private volatile PacketExecutorService packetExecutorService;
+
     @Override
     public void sendPlaceholder(Player player, String placeholder, String value) {
-        GermPacketAPI.sendPlaceholder(player, placeholder, value);
+        packetExecutorService.submitAsyncTask(() -> GermPacketAPI.sendPlaceholder(player, placeholder, value));
     }
 
     @Override
     public void sendPlaceholderMap(Player player, Map<String, String> placeholderMap) {
-        placeholderMap.forEach((placeholder, value) -> GermPacketAPI.sendPlaceholder(player, placeholder, value));
+        packetExecutorService.submitAsyncTask(() -> placeholderMap.forEach((placeholder, value) -> GermPacketAPI.sendPlaceholder(player, placeholder, value)));
     }
 
     @SafeVarargs
     @Override
     public final void sendPlaceholders(Player player, Pair<String, String>... pairs) {
-        for (Pair<String, String> pair : pairs) {
-            GermPacketAPI.sendPlaceholder(player, pair.getFirst(), pair.getSecond());
-        }
+        packetExecutorService.submitAsyncTask(() -> {
+            for (Pair<String, String> pair : pairs) {
+                GermPacketAPI.sendPlaceholder(player, pair.getFirst(), pair.getSecond());
+            }
+        });
     }
 
     @Override
     public void removePlaceholder(Player player, String placeholder, boolean startsWith) {
-        if (startsWith) {
-            GermPacketAPI.removePlaceholderIfContain(player, placeholder);
-        } else {
-            GermPacketAPI.removePlaceholder(player, placeholder);
-        }
+        packetExecutorService.submitAsyncTask(() -> {
+            if (startsWith) {
+                GermPacketAPI.removePlaceholderIfContain(player, placeholder);
+            } else {
+                GermPacketAPI.removePlaceholder(player, placeholder);
+            }
+        });
     }
 
     @Override
     public void removePlaceholders(Player player, String... placeholder) {
-        for (String s : placeholder) {
-            GermPacketAPI.removePlaceholder(player, s);
-        }
+        packetExecutorService.submitAsyncTask(() -> {
+            for (String s : placeholder) {
+                GermPacketAPI.removePlaceholder(player, s);
+            }
+        });
+    }
+
+    @Autowired
+    public void setPacketExecutorService(PacketExecutorService packetExecutorService) {
+        this.packetExecutorService = packetExecutorService;
     }
 }

@@ -18,9 +18,10 @@
 
 package top.nustar.nustarcorebridge.api.service;
 
-import java.util.Map;
 import org.bukkit.entity.Player;
 import top.nustar.nustarcorebridge.utils.Pair;
+
+import java.util.Map;
 
 @SuppressWarnings("unused")
 public interface PlaceholderService {

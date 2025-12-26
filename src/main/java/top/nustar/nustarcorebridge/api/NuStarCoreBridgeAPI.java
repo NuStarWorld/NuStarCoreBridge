@@ -18,7 +18,6 @@
 
 package top.nustar.nustarcorebridge.api;
 
-import java.util.Map;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import team.idealstate.sugar.next.context.annotation.component.Component;
@@ -29,6 +28,8 @@ import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
 import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.api.service.SlotService;
 import top.nustar.nustarcorebridge.utils.Pair;
+
+import java.util.Map;
 
 /**
  * @author NuStar
