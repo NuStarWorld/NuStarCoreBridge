@@ -18,10 +18,6 @@
 
 package top.nustar.nustarcorebridge.api.packet.registry.impl;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-import java.util.*;
-import java.util.stream.Collectors;
 import lombok.Getter;
 import team.idealstate.sugar.logging.Log;
 import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
@@ -31,6 +27,11 @@ import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
 import top.nustar.nustarcorebridge.api.packet.registry.HandlerRegistry;
 import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
 import top.nustar.nustarcorebridge.exception.PacketArgumentException;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author NuStar<br>
@@ -79,7 +80,6 @@ public class DefaultHandlerRegistry implements HandlerRegistry {
         // 判断第一个参数是否为 PacketContext
         if (parameterArray.length > 0 && PacketContext.class.isAssignableFrom(parameterArray[0].getType())) {
             argObjects[i++] = packetContext;
-            System.out.println("添加上下文参数");
         }
 
         List<String> missingParams = new ArrayList<>();

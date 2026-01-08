@@ -19,10 +19,10 @@
 package top.nustar.nustarcorebridge.service;
 
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 import team.idealstate.sugar.next.context.Context;
 import team.idealstate.sugar.next.context.annotation.component.Service;
 import team.idealstate.sugar.next.context.aware.ContextAware;
-import top.nustar.nustarcorebridge.NuStarCoreBridge;
 import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 
 /**
@@ -37,7 +37,7 @@ public class BukkitPacketExecutorService implements PacketExecutorService, Conte
 
     @Override
     public void submitAsyncTask(Runnable runnable) {
-        Bukkit.getScheduler().runTaskAsynchronously((NuStarCoreBridge) context.getHolder(), runnable);
+        Bukkit.getScheduler().runTaskAsynchronously((Plugin) context.getHolder(), runnable);
     }
 
     @Override
