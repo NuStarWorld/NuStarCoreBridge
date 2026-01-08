@@ -38,7 +38,6 @@ public class DragonCoreSlotServiceImpl implements SlotService {
     @Override
     public void putSlotItem(Player player, String identifier, ItemStack item) {
         packetExecutorService.submitAsyncTask(() -> PacketSender.putClientSlotItem(player, identifier, item));
-
     }
 
     @Override

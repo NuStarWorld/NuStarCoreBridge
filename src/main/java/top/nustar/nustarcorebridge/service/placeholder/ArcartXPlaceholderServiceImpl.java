@@ -18,6 +18,7 @@
 
 package top.nustar.nustarcorebridge.service.placeholder;
 
+import java.util.Map;
 import org.bukkit.entity.Player;
 import priv.seventeen.artist.arcartx.api.ArcartXAPI;
 import team.idealstate.sugar.next.context.annotation.component.Service;
@@ -26,8 +27,6 @@ import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.utils.Pair;
-
-import java.util.Map;
 
 /**
  * @author : NuStar Date : 2025/7/23 21:53 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
@@ -41,12 +40,14 @@ public class ArcartXPlaceholderServiceImpl implements PlaceholderService {
 
     @Override
     public void sendPlaceholder(Player player, String placeholder, String value) {
-        packetExecutorService.submitAsyncTask(() -> ArcartXAPI.getNetworkSender().sendServerVariable(player, placeholder, value));
+        packetExecutorService.submitAsyncTask(
+                () -> ArcartXAPI.getNetworkSender().sendServerVariable(player, placeholder, value));
     }
 
     @Override
     public void sendPlaceholderMap(Player player, Map<String, String> placeholderMap) {
-        packetExecutorService.submitAsyncTask(() -> ArcartXAPI.getNetworkSender().sendMultipleServerVariable(player, placeholderMap));
+        packetExecutorService.submitAsyncTask(
+                () -> ArcartXAPI.getNetworkSender().sendMultipleServerVariable(player, placeholderMap));
     }
 
     @SafeVarargs
@@ -61,7 +62,8 @@ public class ArcartXPlaceholderServiceImpl implements PlaceholderService {
 
     @Override
     public void removePlaceholder(Player player, String placeholder, boolean startsWith) {
-        packetExecutorService.submitAsyncTask(() -> ArcartXAPI.getNetworkSender().removeServerVariable(player, placeholder, startsWith));
+        packetExecutorService.submitAsyncTask(
+                () -> ArcartXAPI.getNetworkSender().removeServerVariable(player, placeholder, startsWith));
     }
 
     @Override

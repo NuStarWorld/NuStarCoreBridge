@@ -19,6 +19,7 @@
 package top.nustar.nustarcorebridge.service.placeholder;
 
 import com.germ.germplugin.api.GermPacketAPI;
+import java.util.Map;
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Service;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
@@ -26,8 +27,6 @@ import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.utils.Pair;
-
-import java.util.Map;
 
 @Service
 @DependsOn(classes = "com.germ.germplugin.GermPlugin")
@@ -43,7 +42,8 @@ public class GermPluginPlaceholderServiceImpl implements PlaceholderService {
 
     @Override
     public void sendPlaceholderMap(Player player, Map<String, String> placeholderMap) {
-        packetExecutorService.submitAsyncTask(() -> placeholderMap.forEach((placeholder, value) -> GermPacketAPI.sendPlaceholder(player, placeholder, value)));
+        packetExecutorService.submitAsyncTask(() -> placeholderMap.forEach(
+                (placeholder, value) -> GermPacketAPI.sendPlaceholder(player, placeholder, value)));
     }
 
     @SafeVarargs

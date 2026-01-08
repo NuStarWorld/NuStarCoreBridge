@@ -18,6 +18,7 @@
 
 package top.nustar.nustarcorebridge.service.placeholder;
 
+import java.util.Map;
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Service;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
@@ -26,8 +27,6 @@ import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.utils.Pair;
 import yslelf.cloudpick.bukkit.api.PacketSender;
-
-import java.util.Map;
 
 /**
  * @author : NuStar Date : 2025/7/23 01:29 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
@@ -65,7 +64,8 @@ public class CloudPickPlaceholderServiceImpl implements PlaceholderService {
 
     @Override
     public void removePlaceholder(Player player, String placeholder, boolean startsWith) {
-        packetExecutorService.submitAsyncTask(() -> PacketSender.sendDeletePlaceholderCache(player, placeholder, startsWith));
+        packetExecutorService.submitAsyncTask(
+                () -> PacketSender.sendDeletePlaceholderCache(player, placeholder, startsWith));
     }
 
     @Override

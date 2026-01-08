@@ -37,7 +37,6 @@ public class GermPluginSlotServiceImpl implements SlotService {
     @Override
     public void putSlotItem(Player player, String identifier, ItemStack item) {
         packetExecutorService.submitAsyncTask(() -> GermPacketAPI.sendSlotItemStack(player, identifier, item));
-
     }
 
     @Override

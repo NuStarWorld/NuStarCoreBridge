@@ -18,6 +18,8 @@
 
 package top.nustar.nustarcorebridge.api.packet.simple;
 
+import java.util.List;
+import java.util.Map;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
@@ -28,9 +30,6 @@ import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
 import top.nustar.nustarcorebridge.api.packet.PacketEventBus;
 import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author : NuStar Date : 2025/6/12 22:01 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a

@@ -18,9 +18,8 @@
 
 package top.nustar.nustarcorebridge.api.packet.registry;
 
-import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
-
 import java.util.Map;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 
 /**
  * @author NuStar<br>

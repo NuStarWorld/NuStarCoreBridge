@@ -19,6 +19,9 @@
 package top.nustar.nustarcorebridge.service.placeholder;
 
 import eos.moe.dragoncore.network.PacketSender;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Service;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
@@ -26,10 +29,6 @@ import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.utils.Pair;
-
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 @DependsOn(classes = "eos.moe.dragoncore.DragonCore")
@@ -40,7 +39,8 @@ public class DragonCorePlaceholderServiceImpl implements PlaceholderService {
 
     @Override
     public void sendPlaceholder(Player player, String placeholder, String value) {
-        packetExecutorService.submitAsyncTask(() -> PacketSender.sendSyncPlaceholder(player, Collections.singletonMap(placeholder, value)));
+        packetExecutorService.submitAsyncTask(
+                () -> PacketSender.sendSyncPlaceholder(player, Collections.singletonMap(placeholder, value)));
     }
 
     @Override
@@ -62,8 +62,8 @@ public class DragonCorePlaceholderServiceImpl implements PlaceholderService {
 
     @Override
     public void removePlaceholder(Player player, String placeholder, boolean startsWith) {
-        packetExecutorService.submitAsyncTask(() -> PacketSender.sendDeletePlaceholderCache(player, placeholder, startsWith));
-
+        packetExecutorService.submitAsyncTask(
+                () -> PacketSender.sendDeletePlaceholderCache(player, placeholder, startsWith));
     }
 
     @Override
