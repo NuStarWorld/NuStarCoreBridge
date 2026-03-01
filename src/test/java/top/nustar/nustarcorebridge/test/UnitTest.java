@@ -18,7 +18,6 @@
 
 package top.nustar.nustarcorebridge.test;
 
-import java.util.Collections;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
@@ -29,6 +28,8 @@ import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.api.packet.registry.impl.DefaultPacketProcessorRegistry;
 import top.nustar.nustarcorebridge.api.packet.simple.SimplePacketSender;
 
+import java.util.Collections;
+
 /**
  * @author NuStar<br>
  * @since 2025/12/2 13:35<br>
@@ -37,8 +38,9 @@ public class UnitTest {
     @Test
     public void test() {
         try {
+            TestContext testContext = new TestContext();
             DefaultPacketProcessorRegistry defaultPacketProcessorRegistry =
-                    new DefaultPacketProcessorRegistry(new MethodHandleTestClass());
+                    new DefaultPacketProcessorRegistry(testContext.getContext() ,new MethodHandleTestClass());
 
             Assertions.assertAll(() -> {
                 defaultPacketProcessorRegistry.invoke(
