@@ -48,7 +48,7 @@ public class CoreBridgePacket implements PacketProcessor {
     private volatile PlaceholderService placeholderService;
     private volatile NuStarCoreBridgeConfiguration configuration;
 
-    @PacketHandler(value = "parsePapi", description = "为目标解析一个 Papi 变量")
+    @PacketHandler(value = "parsePapi", description = "为目标解析一个 Papi 变量", cooldown = 500)
     public void parsePapi(
             PacketContext<Player> packetContext,
             @PacketArgument(

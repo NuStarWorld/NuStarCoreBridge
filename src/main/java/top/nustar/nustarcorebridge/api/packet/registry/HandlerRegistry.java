@@ -18,10 +18,12 @@
 
 package top.nustar.nustarcorebridge.api.packet.registry;
 
-import java.lang.reflect.Parameter;
-import java.util.Map;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketArgument;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
+
+import java.lang.reflect.Parameter;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author NuStar<br>
@@ -34,6 +36,16 @@ public interface HandlerRegistry {
 
     /** 获得方法的所有参数表，返回的是原始表 */
     Map<PacketArgument, Parameter> getUnsafeParameters();
+
+    /**
+     * 获取方法的冷却时间表，返回的是原始表的副本
+     */
+    Map<UUID, Long> getCooldownMap();
+
+    /**
+     * 获取方法的冷却时间表，返回的是原始表
+     */
+    Map<UUID, Long> getUnsafeCooldownMap();
 
     /**
      * 执行方法

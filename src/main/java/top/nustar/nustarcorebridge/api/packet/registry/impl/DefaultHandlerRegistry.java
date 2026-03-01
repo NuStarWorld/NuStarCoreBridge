@@ -20,17 +20,23 @@ package top.nustar.nustarcorebridge.api.packet.registry.impl;
 
 import lombok.Getter;
 import team.idealstate.sugar.logging.Log;
+import team.idealstate.sugar.next.context.Bean;
+import team.idealstate.sugar.next.context.Context;
+import top.nustar.nustarcorebridge.NuStarCoreBridge;
 import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
 import top.nustar.nustarcorebridge.api.packet.annotations.PacketArgument;
+import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
 import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.api.packet.converter.ArgumentConverter;
 import top.nustar.nustarcorebridge.api.packet.registry.HandlerRegistry;
 import top.nustar.nustarcorebridge.api.packet.sender.PacketSender;
+import top.nustar.nustarcorebridge.configuration.DebugConfiguration;
 import top.nustar.nustarcorebridge.exception.PacketArgumentException;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
@@ -39,6 +45,8 @@ import java.util.stream.Collectors;
  */
 public class DefaultHandlerRegistry implements HandlerRegistry {
     private static final Map<Class<? extends ArgumentConverter>, ArgumentConverter> converterCacheMap = new HashMap<>();
+
+    private final Context context;
     // private static final MethodHandles.Lookup PUBLIC_LOOKUP = MethodHandles.lookup();
     @Getter
     private final String handlerName;
@@ -48,13 +56,18 @@ public class DefaultHandlerRegistry implements HandlerRegistry {
     // private final MethodHandle methodHandle;
     private final Method method;
     private final Parameter[] parameterArray;
+    private final long cooldown;
     private final Map<PacketArgument, Parameter> parameters;
+    private final Map<UUID, Long> cooldownMap = new ConcurrentHashMap<>();
 
-    public DefaultHandlerRegistry(PacketProcessor processor, Method method) {
+    public DefaultHandlerRegistry(Context context, PacketProcessor processor, Method method) {
+        this.context = context;
         this.processor = processor;
         this.parameterArray = method.getParameters();
         this.packetName = processor.getPacketName();
-        this.handlerName = processor.getHandlerName(method);
+        PacketHandler packetHandler = method.getAnnotation(PacketHandler.class);
+        this.handlerName = packetHandler.value();
+        this.cooldown = packetHandler.cooldown();
         this.method = method;
         this.parameters = new LinkedHashMap<>(parameterArray.length);
 
@@ -117,6 +130,20 @@ public class DefaultHandlerRegistry implements HandlerRegistry {
             return;
         }
         try {
+            // 检查发包冷却
+            UUID senderUid = packetContext.getPacketSender().getUid();
+            if (cooldownMap.containsKey(senderUid)) {
+                long nextInvokeTime = cooldownMap.get(senderUid);
+                if (System.currentTimeMillis() < nextInvokeTime) {
+                    Bean<DebugConfiguration> debugConfigurationBean = context.getBean(DebugConfiguration.class);
+                    if (debugConfigurationBean != null && debugConfigurationBean.getInstance().isDebug()) {
+                        ((NuStarCoreBridge)context.getHolder()).getLogger().info(String.format("玩家 %s 尝试发包 %s 方法 %s 但处于冷却中", packetContext.getPacketSender().getName(), packetName, handlerName));
+                    }
+                    return;
+                }
+            }
+            cooldownMap.put(senderUid, System.currentTimeMillis() + cooldown);
+
             method.invoke(processor, argObjects);
         } catch (Throwable e) {
             Log.error(String.format("执行发包方法 %s 出错", handlerName));
@@ -146,5 +173,15 @@ public class DefaultHandlerRegistry implements HandlerRegistry {
     @Override
     public Map<PacketArgument, Parameter> getUnsafeParameters() {
         return parameters;
+    }
+
+    @Override
+    public Map<UUID, Long> getCooldownMap() {
+        return new ConcurrentHashMap<>(getUnsafeCooldownMap());
+    }
+
+    @Override
+    public Map<UUID, Long> getUnsafeCooldownMap() {
+        return cooldownMap;
     }
 }

@@ -18,19 +18,21 @@
 
 package top.nustar.nustarcorebridge.api.packet.registry.impl;
 
+import lombok.Getter;
+import team.idealstate.sugar.logging.Log;
+import team.idealstate.sugar.next.context.Context;
+import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
+import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
+import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
+import top.nustar.nustarcorebridge.api.packet.registry.HandlerRegistry;
+import top.nustar.nustarcorebridge.api.packet.registry.PacketProcessorRegistry;
+
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
-import lombok.Getter;
-import team.idealstate.sugar.logging.Log;
-import top.nustar.nustarcorebridge.api.packet.PacketProcessor;
-import top.nustar.nustarcorebridge.api.packet.annotations.PacketHandler;
-import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
-import top.nustar.nustarcorebridge.api.packet.registry.HandlerRegistry;
-import top.nustar.nustarcorebridge.api.packet.registry.PacketProcessorRegistry;
 
 /**
  * @author NuStar<br>
@@ -43,7 +45,7 @@ public class DefaultPacketProcessorRegistry implements PacketProcessorRegistry {
 
     private final Map<String, HandlerRegistry> handlerRegistryMap = new ConcurrentHashMap<>();
 
-    public DefaultPacketProcessorRegistry(PacketProcessor processor) {
+    public DefaultPacketProcessorRegistry(Context context, PacketProcessor processor) {
         this.packetName = processor.getPacketName();
 
         List<Method> handlerMethods = Arrays.stream(processor.getClass().getDeclaredMethods())
@@ -53,7 +55,7 @@ public class DefaultPacketProcessorRegistry implements PacketProcessorRegistry {
         for (Method handlerMethod : handlerMethods) {
             PacketHandler handlerMethodAnnotation = handlerMethod.getAnnotation(PacketHandler.class);
             String handlerName = handlerMethodAnnotation.value();
-            DefaultHandlerRegistry defaultHandlerRegistry = new DefaultHandlerRegistry(processor, handlerMethod);
+            DefaultHandlerRegistry defaultHandlerRegistry = new DefaultHandlerRegistry(context, processor, handlerMethod);
             handlerRegistryMap.put(handlerName, defaultHandlerRegistry);
 
             Log.info("               ┝── " + handlerName + " "

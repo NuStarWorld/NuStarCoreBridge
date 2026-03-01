@@ -29,4 +29,9 @@ public @interface PacketHandler {
     String value() default "";
 
     String description() default "无介绍";
+
+    /**
+     * 冷却时间，单位毫秒
+     */
+    long cooldown() default 0;
 }

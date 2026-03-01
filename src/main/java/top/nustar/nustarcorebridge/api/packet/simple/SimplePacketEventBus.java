@@ -18,14 +18,13 @@
 
 package top.nustar.nustarcorebridge.api.packet.simple;
 
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import team.idealstate.sugar.logging.Log;
+import team.idealstate.sugar.next.context.Context;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import team.idealstate.sugar.next.context.annotation.feature.Scope;
+import team.idealstate.sugar.next.context.aware.ContextAware;
 import team.idealstate.sugar.next.context.lifecycle.Destroyable;
 import team.idealstate.sugar.next.context.lifecycle.Initializable;
 import team.idealstate.sugar.validate.Validation;
@@ -38,13 +37,18 @@ import top.nustar.nustarcorebridge.api.packet.context.PacketContext;
 import top.nustar.nustarcorebridge.api.packet.registry.PacketProcessorRegistry;
 import top.nustar.nustarcorebridge.api.packet.registry.impl.DefaultPacketProcessorRegistry;
 
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
 @Component
 @Scope(Scope.SINGLETON)
 @SuppressWarnings("unused")
 @DependsOn(properties = @DependsOn.Property(key = NuStarCoreBridgeProperties.IS_SUB_PLUGIN, value = "false"))
-public class SimplePacketEventBus implements PacketEventBus, Initializable, Destroyable {
+public class SimplePacketEventBus implements PacketEventBus, Initializable, Destroyable, ContextAware {
     private final Map<String, PacketProcessorRegistry> packetProcessorRegistryMap = new ConcurrentHashMap<>();
     static volatile SimplePacketEventBus instance;
+    private Context context;
 
     @Override
     public void initialize() {
@@ -63,7 +67,7 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
                     throw new IllegalArgumentException("PacketName " + packetName + " is already registered");
                 }
                 Log.info("Registering... " + packetName);
-                return new DefaultPacketProcessorRegistry(packetProcessor);
+                return new DefaultPacketProcessorRegistry(context, packetProcessor);
             });
             return this;
         } catch (Throwable e) {
@@ -93,7 +97,7 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
             }
             String packetName = processor.getPacketName();
             Log.info("Registering... " + packetName);
-            this.packetProcessorRegistryMap.put(packetName, new DefaultPacketProcessorRegistry(processor));
+            this.packetProcessorRegistryMap.put(packetName, new DefaultPacketProcessorRegistry(context, processor));
         }
     }
 
@@ -108,5 +112,10 @@ public class SimplePacketEventBus implements PacketEventBus, Initializable, Dest
             return;
         }
         packetProcessorRegistry.invoke(handleName, packetContext, argsMap);
+    }
+
+    @Override
+    public void setContext(Context context) {
+        this.context = context;
     }
 }
