@@ -18,7 +18,6 @@
 
 package top.nustar.nustarcorebridge.service.placeholder;
 
-import java.util.Map;
 import org.bukkit.entity.Player;
 import team.idealstate.sugar.next.context.annotation.component.Service;
 import team.idealstate.sugar.next.context.annotation.feature.Autowired;
@@ -27,6 +26,8 @@ import top.nustar.nustarcorebridge.api.service.PacketExecutorService;
 import top.nustar.nustarcorebridge.api.service.PlaceholderService;
 import top.nustar.nustarcorebridge.utils.Pair;
 import yslelf.cloudpick.bukkit.api.PacketSender;
+
+import java.util.Map;
 
 /**
  * @author : NuStar Date : 2025/7/23 01:29 Website : <a href="https://www.nustar.top">nustar's web</a> Github : <a
@@ -64,15 +65,17 @@ public class CloudPickPlaceholderServiceImpl implements PlaceholderService {
 
     @Override
     public void removePlaceholder(Player player, String placeholder, boolean startsWith) {
+        // 云拾自带的移除变量方法不适用，因此只能使用如下的蠢方法。
+        // 发送一个以变量名为标识的变量，内容 remove 通知界面事件要删除这个变量，需要用户在界面内自己做删除处理。
         packetExecutorService.submitAsyncTask(
-                () -> PacketSender.sendDeletePlaceholderCache(player, placeholder, startsWith));
+                () -> PacketSender.sendCustomData(player, placeholder, "remove", startsWith));
     }
 
     @Override
     public void removePlaceholders(Player player, String... placeholder) {
         packetExecutorService.submitAsyncTask(() -> {
             for (String s : placeholder) {
-                PacketSender.sendDeletePlaceholderCache(player, s, false);
+                PacketSender.sendCustomData(player, s, "remove", false);
             }
         });
     }
