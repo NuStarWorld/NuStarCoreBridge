@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "top.nustar.nustarcorebridge"
-version = "2.0.0-SNAPSHOT"
+version = "2.0.1-SNAPSHOT"
 
 java {
     toolchain {
