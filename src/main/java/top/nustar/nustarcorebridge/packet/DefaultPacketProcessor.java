@@ -19,6 +19,7 @@
 package top.nustar.nustarcorebridge.packet;
 
 import org.bukkit.entity.Player;
+import team.idealstate.sugar.logging.Log;
 import team.idealstate.sugar.next.context.annotation.component.Component;
 import team.idealstate.sugar.next.context.annotation.feature.DependsOn;
 import top.nustar.nustarcorebridge.api.NuStarCoreBridgeProperties;
@@ -64,7 +65,9 @@ public class DefaultPacketProcessor implements PacketProcessor {
 
     /** 向控制台发送一条消息 */
     @PacketHandler(value = "sendConsoleMessage", description = "向控制台输出一条消息", cooldown = 1000)
-    public void sendConsoleMessage() {
-        System.out.println("ConsoleMessage");
+    public void sendConsoleMessage(
+            @PacketArgument(value = "message", description = "要发送的消息") String message
+    ) {
+        Log.info(message);
     }
 }
