@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "top.nustar.nustarcorebridge"
-version = "2.0.1-SNAPSHOT"
+version = "2.0.2-SNAPSHOT"
 
 java {
     toolchain {
@@ -61,6 +61,11 @@ dependencies {
     compileOnly(libs.spigot.api)
     compileOnly(libs.placeholderapi)
     compileOnly(libs.minecraft.next.spigot)
+    compileOnly(libs.easycore)
+    compileOnly(libs.dragoncore)
+    compileOnly(libs.germplugin)
+    compileOnly(libs.cloudpick)
+    compileOnly(libs.arcartX)
     compileOnly(fileTree(File(projectDir, "libraries")))
 
     runtimeOnly(libs.mysql.connector.j)

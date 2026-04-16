@@ -11,5 +11,7 @@ depend:
 softdepend:
 - DragonCore
 - GermPlugin
+- EasyCore
+- ArcartX
 commands:
   nscg:
