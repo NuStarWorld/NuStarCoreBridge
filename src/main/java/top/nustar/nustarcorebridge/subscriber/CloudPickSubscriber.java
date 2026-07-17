@@ -46,7 +46,9 @@ public class CloudPickSubscriber extends AbstractPostPacket implements Listener 
 
     @EventHandler
     public void on(CustomPacketEvent event) {
-        if (event.isCancelled()) return;
+        if (event.isCancelled() || event.getData().isEmpty()) {
+            return;
+        }
         List<String> argList = new ArrayList<>(event.getData());
         String handleName = argList.get(0);
         Map<String, Object> argsMap = getArgs(argList);
